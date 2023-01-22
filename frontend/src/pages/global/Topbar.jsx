@@ -1,37 +1,38 @@
-import React from 'react'
-import { Box, Icon, IconButton, useTheme } from '@mui/material';
-import { useContext } from 'react';
-import { ColorModeContext, tokens } from '../../theme';
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
-import PersonOutlinedicon from '@mui/icons-material/PersonOutlined';
-import SearchIcon from '@mui/icons-material/Search'; 
-import InputBase from '@mui/material/InputBase';
-
+import { Box, IconButton, useTheme } from "@mui/material";
+import { useContext } from "react";
+import { ColorModeContext, tokens } from "../../theme";
+import InputBase from "@mui/material/InputBase";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import SearchIcon from "@mui/icons-material/Search";
 
 const Topbar = () => {
-  
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
 
-  return <Box display = 'flex' justifyContent = 'space-between' p={2}>
-            { /* icons */}
-            <Box display = "flex">
+  return (
+    <Box display="flex" justifyContent="space-between" p={2}>
+      {/* SEARCH BAR */}
+      <Box display="flex"></Box>
 
-              <IconButton onClick={colorMode.toggleColorMode}>
-                {theme.palette.mode === 'dark' ? (
-                  <DarkModeOutlinedIcon />
-                ) : (
-                  <LightModeOutlinedIcon />
-                )}
-              </IconButton>
-              <IconButton>
-                <PersonOutlinedicon />
-              </IconButton>
-            </Box>
-         </Box>;
-  
-}
+      {/* ICONS */}
+      <Box display="flex">
+        <IconButton onClick={colorMode.toggleColorMode}>
+          {theme.palette.mode === "dark" ? (
+            <DarkModeOutlinedIcon />
+          ) : (
+            <LightModeOutlinedIcon />
+          )}
+        </IconButton>
 
-export default Topbar
+        <IconButton>
+          <PersonOutlinedIcon />
+        </IconButton>
+      </Box>
+    </Box>
+  );
+};
+
+export default Topbar;
