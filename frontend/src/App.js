@@ -2,9 +2,9 @@ import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
 import Topbar from "./pages/global/Topbar";
-import Sidebar from './pages/global/Sidebar';
+import SearchBar from './components/SearchBar';
 import Dashboard from "./pages/dashboard/Dashboard";
- 
+import { ProSidebarProvider } from 'react-pro-sidebar';
 
 
 function App() {
@@ -13,16 +13,20 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+
         <div className="app">
           <main className="content">
+            
+
             <Topbar />
-            <Sidebar />
+
             { /* URL ROUTING */}
             <Routes>
               {/*<Route path = "/" element = {<Homepage />}/> */}
             </Routes>
           </main>
         </div>
+
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
