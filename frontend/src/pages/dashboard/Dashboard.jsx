@@ -1,11 +1,7 @@
-import React from 'react'
-import SearchIcon from "@mui/icons-material/Search";
-import InputBase from "@mui/material/InputBase";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
-const Dashboard = () => {
-  return (
-    <div></div>
-  )
-  }
+import React from "react";
 
-export default Dashboard
+const Dashboard = () => {
+  return <div>Dashboard</div>;
+};
+
+export default Dashboard;
