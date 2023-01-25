@@ -1,31 +1,30 @@
-import { themeSettings } from "./theme";
+import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { createTheme } from "@mui/material/styles";
-import { useSelector } from "react-redux";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Topbar from "./pages/global/Topbar";
+import Sidebar from './pages/global/Sidebar';
 import Dashboard from "./pages/dashboard/Dashboard";
-import Layout from "./pages/layout/Layout";
-import { useMemo } from "react";
+ 
+
 
 function App() {
-  const currentMode = useSelector((state) => state.global.mode);
-  const theme = useMemo(() => createTheme(themeSettings(currentMode)), [currentMode]);
-
+  const [theme, colorMode] = useMode();
   return (
-    <div className="app">
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Routes>
-            {/* Layout component will have the navbar and sidebar - as they are on each page */}
-            <Route element = {<Layout />}>
-              <Route path="/" element={<Navigate to = "/dashboard" replace />}/>
-              <Route path="/dashboard" element ={<Dashboard/>} />
-            </Route>
-          </Routes>
-        </ThemeProvider>
-      </BrowserRouter>
-    </div>
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <div className="app">
+          <main className="content">
+            <Topbar />
+            <Sidebar />
+            { /* URL ROUTING */}
+            <Routes>
+              {/*<Route path = "/" element = {<Homepage />}/> */}
+            </Routes>
+          </main>
+        </div>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 }
 
