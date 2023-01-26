@@ -1,50 +1,10 @@
 import { createContext, useState, useMemo } from "react";
 import { createTheme } from "@mui/material/styles";
 
-//Dark and light color code
-
+// color design tokens export
 export const tokens = (mode) => ({
   ...(mode === "dark"
     ? {
-        primary: {
-          100: "#cdccd2",
-          200: "#9a99a4",
-          300: "#686677",
-          400: "#353349",
-          500: "#03001c",
-          600: "#020016",
-          700: "#020011",
-          800: "#01000b",
-          900: "#010006",
-        },
-
-        //Teal
-        tealAccent: {
-          100: "#f0fbf8",
-          200: "#e2f7f0",
-          300: "#d3f2e9",
-          400: "#c5eee1",
-          500: "#b6eada",
-          600: "#92bbae",
-          700: "#6d8c83",
-          800: "#495e57",
-          900: "#242f2c",
-        },
-
-        //accent blue
-        blueAccent: {
-          100: "#dee9f1",
-          200: "#bdd2e3",
-          300: "#9dbcd5",
-          400: "#7ca5c7",
-          500: "#5b8fb9",
-          600: "#497294",
-          700: "#37566f",
-          800: "#24394a",
-          900: "#121d25",
-        },
-
-        //grey
         grey: {
           100: "#e0e0e0",
           200: "#c2c2c2",
@@ -56,8 +16,28 @@ export const tokens = (mode) => ({
           800: "#292929",
           900: "#141414",
         },
-
-        //red accent
+        primary: {
+          100: "#d0d1d5",
+          200: "#a1a4ab",
+          300: "#727681",
+          400: "#1F2A40",
+          500: "#141b2d",
+          600: "#101624",
+          700: "#0c101b",
+          800: "#080b12",
+          900: "#040509",
+        },
+        greenAccent: {
+          100: "#dbf5ee",
+          200: "#b7ebde",
+          300: "#94e2cd",
+          400: "#70d8bd",
+          500: "#4cceac",
+          600: "#3da58a",
+          700: "#2e7c67",
+          800: "#1e5245",
+          900: "#0f2922",
+        },
         redAccent: {
           100: "#f8dcdb",
           200: "#f1b9b7",
@@ -69,47 +49,19 @@ export const tokens = (mode) => ({
           800: "#58201e",
           900: "#2c100f",
         },
+        blueAccent: {
+          100: "#e1e2fe",
+          200: "#c3c6fd",
+          300: "#a4a9fc",
+          400: "#868dfb",
+          500: "#6870fa",
+          600: "#535ac8",
+          700: "#3e4396",
+          800: "#2a2d64",
+          900: "#151632",
+        },
       }
     : {
-        primary: {
-          100: "#010006",
-          200: "#01000b",
-          300: "#020011",
-          400: "#020016",
-          500: "#03001c",
-          600: "#353349",
-          700: "#686677",
-          800: "#9a99a4",
-          900: "#cdccd2",
-        },
-
-        //Teal
-        tealAccent: {
-          100: "#242f2c",
-          200: "#495e57",
-          300: "#6d8c83",
-          400: "#92bbae",
-          500: "#b6eada",
-          600: "#c5eee1",
-          700: "#d3f2e9",
-          800: "#e2f7f0",
-          900: "#f0fbf8",
-        },
-
-        //accent blue
-        blueAccent: {
-          100: "#121d25",
-          200: "#24394a",
-          300: "#37566f",
-          400: "#497294",
-          500: "#5b8fb9",
-          600: "#7ca5c7",
-          700: "#9dbcd5",
-          800: "#bdd2e3",
-          900: "#dee9f1",
-        },
-
-        //grey
         grey: {
           100: "#141414",
           200: "#292929",
@@ -121,8 +73,28 @@ export const tokens = (mode) => ({
           800: "#c2c2c2",
           900: "#e0e0e0",
         },
-
-        //red accent
+        primary: {
+          100: "#040509",
+          200: "#080b12",
+          300: "#0c101b",
+          400: "#f2f0f0", // manually changed
+          500: "#141b2d",
+          600: "#1F2A40",
+          700: "#727681",
+          800: "#a1a4ab",
+          900: "#d0d1d5",
+        },
+        greenAccent: {
+          100: "#0f2922",
+          200: "#1e5245",
+          300: "#2e7c67",
+          400: "#3da58a",
+          500: "#4cceac",
+          600: "#70d8bd",
+          700: "#94e2cd",
+          800: "#b7ebde",
+          900: "#dbf5ee",
+        },
         redAccent: {
           100: "#2c100f",
           200: "#58201e",
@@ -134,46 +106,59 @@ export const tokens = (mode) => ({
           800: "#f1b9b7",
           900: "#f8dcdb",
         },
+        blueAccent: {
+          100: "#151632",
+          200: "#2a2d64",
+          300: "#3e4396",
+          400: "#535ac8",
+          500: "#6870fa",
+          600: "#868dfb",
+          700: "#a4a9fc",
+          800: "#c3c6fd",
+          900: "#e1e2fe",
+        },
       }),
 });
 
+// mui theme settings
 export const themeSettings = (mode) => {
   const colors = tokens(mode);
-
   return {
     palette: {
       mode: mode,
       ...(mode === "dark"
         ? {
-            background: {
-              default: colors.primary[500],
-            },
+            // palette values for dark mode
             primary: {
               main: colors.primary[500],
             },
             secondary: {
-              main: colors.tealAccent[500],
+              main: colors.greenAccent[500],
             },
             neutral: {
-              main: colors.grey[500],
               dark: colors.grey[700],
+              main: colors.grey[500],
               light: colors.grey[100],
+            },
+            background: {
+              default: colors.primary[500],
             },
           }
         : {
-            background: {
-              default: "#fcfcfc",
-            },
+            // palette values for light mode
             primary: {
               main: colors.primary[100],
             },
             secondary: {
-              main: colors.tealAccent[500],
+              main: colors.greenAccent[500],
             },
             neutral: {
-              main: colors.grey[500],
               dark: colors.grey[700],
+              main: colors.grey[500],
               light: colors.grey[100],
+            },
+            background: {
+              default: "#fcfcfc",
             },
           }),
     },
@@ -208,20 +193,22 @@ export const themeSettings = (mode) => {
   };
 };
 
-// React Context for color mode
-
+// context for color mode
 export const ColorModeContext = createContext({
   toggleColorMode: () => {},
 });
 
 export const useMode = () => {
   const [mode, setMode] = useState("dark");
-  const colorMode = useMemo(() => ({
-    toggleColorMode: () =>
-      setMode((prev) => (prev === "light" ? "dark" : "light")),
-  }));
 
-  const theme = useMemo(() => createTheme(themeSettings(mode)),[mode])
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () =>
+        setMode((prev) => (prev === "light" ? "dark" : "light")),
+    }),
+    []
+  );
 
+  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   return [theme, colorMode];
 };

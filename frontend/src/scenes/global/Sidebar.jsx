@@ -1,9 +1,8 @@
-import React from "react";
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import "react-pro-sidebar/dist/css/styles.css";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
+import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import DatasetOutlinedIcon from "@mui/icons-material/DatasetOutlined";
@@ -57,7 +56,6 @@ const Sidebar = () => {
     >
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
-          {/* LOGO AND MENU ICON */}
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
@@ -73,9 +71,8 @@ const Sidebar = () => {
                 alignItems="center"
                 ml="15px"
               >
-                <Typography variant="h3" color={colors.grey[100]}>
-                  Placeholder
-                </Typography>
+                <Box></Box>
+
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
                 </IconButton>
@@ -83,28 +80,48 @@ const Sidebar = () => {
             )}
           </MenuItem>
 
-          {/* Sidebar Items */}
+          {!isCollapsed && (
+            <Box mb="25px">
+              <Box display="flex" justifyContent="center" alignItems="center">
+
+              </Box>
+              <Box textAlign="center">
+                <Typography variant="h2" color={colors.greenAccent[500]}>
+                  FairnessAnalysis
+                </Typography>
+              </Box>
+            </Box>
+          )}
+
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-            <Item 
-              title = "Homepage"
-              to = "/"
-              icon = {<HomeOutlinedIcon />}
-              selected = {selected}
-              setSelected = {setSelected}
+            <Item
+              title="Home"
+              to="/"
+              icon={<HomeOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
             />
-            <Item 
-              title = "Instructions"
-              to = "/"
-              icon = {<MapOutlinedIcon />}
-              selected = {selected}
-              setSelected = {setSelected}
+            <Item
+              title="Instructions"
+              to="/instructions"
+              icon={<MapOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
             />
-              <Item 
-              title = "Datasets"
-              to = "/"
-              icon = {<DatasetOutlinedIcon />}
-              selected = {selected}
-              setSelected = {setSelected}
+            <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}
+            >
+              Datasets
+   
+            </Typography>
+            <Item
+              title="Dataset #1"
+              to="/dashboard"
+              icon={<DatasetOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
             />
           </Box>
         </Menu>
