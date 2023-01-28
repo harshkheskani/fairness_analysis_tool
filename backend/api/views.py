@@ -13,9 +13,13 @@ def getRoutes (request):
 
 @csrf_exempt
 def searchResultsPost (request):
+    # return HttpResponse(request)
+    print(request.method)
     if request.method == "POST":
         content = json.loads (request.body)
-        searchResults = searchQuery(content['search'])
-        return JsonResponse({'searchResults':searchResults})
+        #content = request.body
+        searchResults = searchQuery(content["searchTerm"])
+        print(searchResults)
+        return JsonResponse(searchResults, safe=False)
     else:
         return HttpResponse ("This Doesn't work")

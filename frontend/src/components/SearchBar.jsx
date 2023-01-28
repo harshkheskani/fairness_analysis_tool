@@ -10,17 +10,19 @@ const SearchBar = () => {
   const colors = tokens(theme.palette.mode);
   const [search, setSearch] = useState("");
 
-
-  const searchQuery = async () => {
-    console.log("function called")
+  
+  const searchQuery = async (searchObj) => {
+    
+    console.log(search)
     await axios (
       {
         method: "POST",
         url: "http://127.0.0.1:8000/api/searchQuery/",
-        data: search,
-      }).then(response => response.json())
+        data: searchObj,
+        //set content type
+      })
       .then((response) => console.log(response.data))
-      .catch(error => console.log(error.response.data))
+      .catch(error => console.log(error))
   }
 
   return (
@@ -39,7 +41,7 @@ const SearchBar = () => {
         onChange={(e) => setSearch(e.target.value)}
       />
     </FormControl>
-      <IconButton type="button" sx={{ p: 1 }} onClick = {searchQuery}>
+      <IconButton type="button" sx={{ p: 1 }} onClick = { () =>searchQuery({"searchTerm": search})}>
         <SearchIcon />
       </IconButton>
     </Box>
