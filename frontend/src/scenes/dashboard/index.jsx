@@ -6,11 +6,10 @@ import ArticleIcon from '@mui/icons-material/Article';
 import PublicIcon from '@mui/icons-material/Public';
 import Header from "../../components/Header";
 import LineChart from "../../components/LineChart";
-
 import StatBox from "../../components/StatBox";
-
 import TopicIcon from '@mui/icons-material/Topic';
 import SearchBar from "../../components/SearchBar";
+import SearchResultsTable from "../../components/SearchResultsTable";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -21,7 +20,15 @@ const Dashboard = () => {
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="Dataset #1" subtitle="Welcome to your dashboard" />
-
+        <Box
+          gridColumn="span 8"
+          backgroundColor={colors.primary[400]}
+        >
+         <SearchBar />
+        </Box>
+        <Box>
+          {/* <SearchResultsTable /> */}
+        </Box> 
         <Box>
           <Button
             sx={{
@@ -107,13 +114,7 @@ const Dashboard = () => {
 
         
         {/* ROW 2 */}
-        <Box
-          gridColumn="span 8"
 
-          backgroundColor={colors.primary[400]}
-        >
-         <SearchBar />
-        </Box>
 
         <Box
           gridColumn="span 15"

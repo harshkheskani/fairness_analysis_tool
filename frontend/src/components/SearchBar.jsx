@@ -5,25 +5,24 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Box, IconButton, useTheme, FormControl } from "@mui/material";
 import axios from "axios";
 
-const SearchBar = () => {
+
+const SearchBar = (props) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  // eslint-disable-next-line
+  const [searchResults, setSearchResults] = useState([]);
 
-  
-  const searchQuery = async (searchObj) => {
-    
-    console.log(search)
-    await axios (
-      {
-        method: "POST",
-        url: "http://127.0.0.1:8000/api/searchQuery/",
-        data: searchObj,
-        //set content type
-      })
+  const searchQuery = async (searchObj) => {;
+    await axios({
+      method: "POST",
+      url: "http://127.0.0.1:8000/api/searchQuery/",
+      data: searchObj,
+    })
       .then((response) => console.log(response.data))
-      .catch(error => console.log(error))
-  }
+      .then((response) => setSearchResults(response))
+      .catch((error) => console.log(error));
+  };
 
   return (
     <Box
@@ -31,20 +30,29 @@ const SearchBar = () => {
       backgroundColor={colors.primary[400]}
       borderRadius="3px"
     >
-    <FormControl>
-      <InputBase
-        type="text"
-        sx={{ ml: 2, flex: 1 }}
-        placeholder="Search"
-        name="search"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-    </FormControl>
-      <IconButton type="button" sx={{ p: 1 }} onClick = { () =>searchQuery({"searchTerm": search})}>
+      <FormControl>
+        <InputBase
+          type="text"
+          sx={{ ml: 2, flex: 1 }}
+          placeholder="Search"
+          name="searchInput"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+        />
+      </FormControl>
+      <IconButton
+        type="button"
+        sx={{ p: 1 }}
+        onClick={() => {
+          searchQuery({ searchTerm: searchInput });
+        }}
+      >
         <SearchIcon />
       </IconButton>
+
     </Box>
+
+    // Rendering Results
   );
 };
 

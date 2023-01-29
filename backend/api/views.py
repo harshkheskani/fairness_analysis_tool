@@ -17,9 +17,7 @@ def searchResultsPost (request):
     print(request.method)
     if request.method == "POST":
         content = json.loads (request.body)
-        #content = request.body
         searchResults = searchQuery(content["searchTerm"])
-        print(searchResults)
         return JsonResponse(searchResults, safe=False)
     else:
         return HttpResponse ("This Doesn't work")
