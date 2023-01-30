@@ -20,7 +20,7 @@ const columns = [
 
 // Table Rows
 const rows = SearchBar.searchResults;
-console.log(rows)
+
 
 const SearchResultsTable = () => {
   const [page, setPage] = React.useState(0);

@@ -10,10 +10,9 @@ const SearchBar = (props) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [searchInput, setSearchInput] = useState("");
-  // eslint-disable-next-line
   const [searchResults, setSearchResults] = useState([]);
-
-  const searchQuery = async (searchObj) => {;
+  
+  const searchQuery = async (searchObj) => {
     await axios({
       method: "POST",
       url: "http://127.0.0.1:8000/api/searchQuery/",
@@ -23,6 +22,7 @@ const SearchBar = (props) => {
       .then((response) => setSearchResults(response))
       .catch((error) => console.log(error));
   };
+
 
   return (
     <Box
@@ -49,7 +49,6 @@ const SearchBar = (props) => {
       >
         <SearchIcon />
       </IconButton>
-
     </Box>
 
     // Rendering Results
