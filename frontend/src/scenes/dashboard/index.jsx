@@ -1,34 +1,35 @@
+import React, { useState } from "react";
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import ArticleIcon from '@mui/icons-material/Article';
-import PublicIcon from '@mui/icons-material/Public';
+import ArticleIcon from "@mui/icons-material/Article";
+import PublicIcon from "@mui/icons-material/Public";
 import Header from "../../components/Header";
 import LineChart from "../../components/LineChart";
 import StatBox from "../../components/StatBox";
-import TopicIcon from '@mui/icons-material/Topic';
+import TopicIcon from "@mui/icons-material/Topic";
 import SearchBar from "../../components/SearchBar";
 import SearchResultsTable from "../../components/SearchResultsTable";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [searchResultsSearchBar, setSearchResultsSearchBar] = useState([]);
+
+  const searchResultsChild = (data) => {
+    setSearchResultsSearchBar(data);
+    console.log(data)
+  };
 
   return (
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="Dataset #1" subtitle="Welcome to your dashboard" />
-        <Box
-          gridColumn="span 8"
-          backgroundColor={colors.primary[400]}
-        >
-         <SearchBar />
+        <Box gridColumn="span 8" backgroundColor={colors.primary[400]}>
+          <SearchBar searchResultsChild = {searchResultsChild}/>
         </Box>
-        <Box>
-          {/* <SearchResultsTable /> */}
-        </Box> 
         <Box>
           <Button
             sx={{
@@ -44,7 +45,8 @@ const Dashboard = () => {
           </Button>
         </Box>
       </Box>
-
+          
+      <SearchResultsTable searchResultsSearchBar={searchResultsSearchBar} />
 
       {/* GRID & CHARTS */}
       <Box
@@ -112,9 +114,7 @@ const Dashboard = () => {
           />
         </Box>
 
-        
         {/* ROW 2 */}
-
 
         <Box
           gridColumn="span 15"
@@ -167,52 +167,45 @@ const Dashboard = () => {
           ))}
         </Box>
 
-
         {/* ROW 3 */}
-
-        </Box>
+      </Box>
+      <Box
+        gridColumn="span 8"
+        gridRow="span 2"
+        backgroundColor={colors.primary[400]}
+      >
         <Box
-          gridColumn="span 8"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
+          mt="25px"
+          p="0 30px"
+          display="flex "
+          justifyContent="space-between"
+          alignItems="center"
         >
-          <Box
-            mt="25px"
-            p="0 30px"
-            display="flex "
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Box>
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.grey[100]}
-              >
-                Example Nivo Graph
-              </Typography>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                Some Total
-              </Typography>
-            </Box>
-            <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton>
-            </Box>
+          <Box>
+            <Typography variant="h5" fontWeight="600" color={colors.grey[100]}>
+              Example Nivo Graph
+            </Typography>
+            <Typography
+              variant="h3"
+              fontWeight="bold"
+              color={colors.greenAccent[500]}
+            >
+              Some Total
+            </Typography>
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
+          <Box>
+            <IconButton>
+              <DownloadOutlinedIcon
+                sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+              />
+            </IconButton>
           </Box>
+        </Box>
+        <Box height="250px" m="-20px 0 0 0">
+          <LineChart isDashboard={true} />
         </Box>
       </Box>
-
+    </Box>
   );
 };
 

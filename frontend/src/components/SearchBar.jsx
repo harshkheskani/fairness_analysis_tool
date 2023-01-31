@@ -4,25 +4,32 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box, IconButton, useTheme, FormControl } from "@mui/material";
 import axios from "axios";
+import { useEffect } from "react";
 
-
-const SearchBar = (props) => {
+const SearchBar = ({ searchResultsChild }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   
+  useEffect(() => {
+    searchResultsChild(searchResults);
+  });
+  // const sendDataToParent = () => {
+  //   searchResultChild(searchResults);
+  // };
+
   const searchQuery = async (searchObj) => {
     await axios({
       method: "POST",
       url: "http://127.0.0.1:8000/api/searchQuery/",
       data: searchObj,
     })
-      .then((response) => console.log(response.data))
+      // .then((response) => console.log(response.data))
       .then((response) => setSearchResults(response))
+     // .then((response) => sendDataToParent(response))
       .catch((error) => console.log(error));
   };
-
 
   return (
     <Box

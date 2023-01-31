@@ -1,30 +1,29 @@
-import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import SearchBar from "./SearchBar";
+import React from "react";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
 
-// Table Columns
-const columns = [
-  { id: "qid", label: "ID", minWidth: 100 },
-  { id: "docid", label: "Document\u00a0ID", minWidth: 170 },
-  { id: "docno", label: "Document\u00a0No", minWidth: 170 },
-  { id: "rank", label: "Rank", minWidth: 100 },
-  { id: "score", label: "Score", minWidth: 170 },
-];
-
-// Table Rows
-const rows = SearchBar.searchResults;
-
-
-const SearchResultsTable = () => {
+const SearchResultsTable = ({ searchResultsSearchBar }) => {
+  console.log(searchResultsSearchBar)
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  // Table Columns
+  const columns = [
+    { id: "qid", label: "ID", minWidth: 100 },
+    { id: "docid", label: "Document\u00a0ID", minWidth: 170 },
+    { id: "docno", label: "Document\u00a0No", minWidth: 170 },
+    { id: "rank", label: "Rank", minWidth: 100 },
+    { id: "score", label: "Score", minWidth: 170 },
+  ];
+
+  // Table Rows
+  const rows = {searchResultsSearchBar};
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
