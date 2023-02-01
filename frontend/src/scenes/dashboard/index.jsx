@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
@@ -9,18 +9,11 @@ import Header from "../../components/Header";
 import LineChart from "../../components/LineChart";
 import StatBox from "../../components/StatBox";
 import TopicIcon from "@mui/icons-material/Topic";
-import SearchBar from "../../components/SearchBar";
-import SearchResultsTable from "../../components/SearchResultsTable";
+import SearchAll from "../../components/SearchAll";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [searchResultsSearchBar, setSearchResultsSearchBar] = useState([]);
-
-  const searchResultsChild = (data) => {
-    setSearchResultsSearchBar(data);
-    console.log(data)
-  };
 
   return (
     <Box m="20px">
@@ -28,7 +21,7 @@ const Dashboard = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="Dataset #1" subtitle="Welcome to your dashboard" />
         <Box gridColumn="span 8" backgroundColor={colors.primary[400]}>
-          <SearchBar searchResultsChild = {searchResultsChild}/>
+
         </Box>
         <Box>
           <Button
@@ -46,8 +39,9 @@ const Dashboard = () => {
         </Box>
       </Box>
           
-      <SearchResultsTable searchResultsSearchBar={searchResultsSearchBar} />
-
+      <Box>
+        <SearchAll />
+      </Box>
       {/* GRID & CHARTS */}
       <Box
         display="grid"

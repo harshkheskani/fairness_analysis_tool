@@ -5,7 +5,9 @@ from django.views.decorators.csrf import csrf_exempt
 from api.searchQuery.queryDataset import searchQuery
 import json
 from django.http import HttpResponse, JsonResponse
-# Create your views here.
+
+
+
 
 @api_view(['GET'])
 def getRoutes (request):
@@ -13,10 +15,8 @@ def getRoutes (request):
 
 @csrf_exempt
 def searchResultsPost (request):
-    # return HttpResponse(request)
-    print(request.method)
     if request.method == "POST":
-        content = json.loads (request.body)
+        content = json.loads (request.body.decode('utf-8'))
         searchResults = searchQuery(content["searchTerm"])
         return JsonResponse(searchResults, safe=False)
     else:
