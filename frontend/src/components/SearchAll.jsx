@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-
-//Searchbar Imports
 import { tokens } from "../theme";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
@@ -10,11 +8,6 @@ import {
   useTheme,
   FormControl,
   Typography,
-} from "@mui/material";
-import axios from "axios";
-
-//Table imports
-import {
   TableContainer,
   Table,
   TableHead,
@@ -23,7 +16,9 @@ import {
   TableCell,
   Paper,
 } from "@mui/material";
+import axios from "axios";
 import { TableVirtuoso } from "react-virtuoso";
+
 
 const SearchAll = () => {
   const columns = [
@@ -72,7 +67,7 @@ const SearchAll = () => {
             align={column.numeric || false ? "right" : "left"}
             style={{ width: column.width }}
             sx={{
-              backgroundColor: "background.paper",
+              backgroundColor: colors.primary[500],
             }}
           >
             {column.label}
@@ -89,6 +84,9 @@ const SearchAll = () => {
           <TableCell
             key={column.id}
             align={column.numeric || false ? "right" : "left"}
+            sx={{
+              backgroundColor: colors.primary[400],
+            }}            
           >
             {row[column.id]}
           </TableCell>
@@ -118,6 +116,7 @@ const SearchAll = () => {
         display="flex"
         backgroundColor={colors.primary[400]}
         borderRadius="3px"
+        sx = {{m: 2}}
       >
         <FormControl>
           <InputBase
@@ -139,49 +138,10 @@ const SearchAll = () => {
           <SearchIcon />
         </IconButton>
       </Box>
-      <Typography>Search Results</Typography>
+
       {searchResults.length !== 0 && (
-        <Box>
-          {/* <TableContainer component={Paper}>
-            <Table aria-label="search results table">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {searchResults.map((row) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.rank}
-                    >
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === "number"
-                              ? column.format(value)
-                              : value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer> */}
+        <Box sx = {{m:2}}>
+          <Typography variant="h4" color={colors.greenAccent[500]}>Search Results</Typography>
           <Paper style={{ height: 400, width: "100%" }}>
             <TableVirtuoso
               data={searchResults}
