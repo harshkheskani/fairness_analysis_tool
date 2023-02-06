@@ -35,14 +35,22 @@ def searchQuery(search):
     qrels["label"] = 1
 
     # Finding top 5 results of search results on TF_IDF
-    tf_idf_search = (tf_idf.search(str(search))).head(5)
+    tf_idf_search = (tf_idf.search(str(search))).head(100)
+
+    # metadataPath = str(__location__) + "/trec_metadata.json.gz"
+    # metadata = pd.read_json(metadataPath, lines=True)
+    # metadata = metadata.rename(columns={"page_id":"docno"})
+    # metadata["docno"] = metadata["docno"].astype(str)
+
+    
+    # tf_idf_search = tf_idf_search.merge(metadata,on="docno")
     tf_idf_search = tf_idf_search.to_json(orient = "records")
     
     # run experiments here 
 
+
+
     return tf_idf_search
-
-
 
 
 

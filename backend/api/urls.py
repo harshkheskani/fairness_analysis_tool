@@ -5,4 +5,6 @@ from api import views
 urlpatterns = [
     path ('', views.getRoutes, name = "routes"),
     path ('searchQuery/', views.searchResultsPost, name = "searchQuery"),
+    path ('indexStats/', views.getIndexStats, name="indexStats" ),
+    
 ]

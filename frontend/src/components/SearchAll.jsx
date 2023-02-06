@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-
 //Searchbar Imports
 import { tokens } from "../theme";
 import InputBase from "@mui/material/InputBase";
@@ -24,6 +23,7 @@ import {
   TableCell,
   Paper,
 } from "@mui/material";
+import { TableVirtuoso } from "react-virtuoso";
 
 const SearchAll = () => {
   const columns = [
@@ -33,6 +33,12 @@ const SearchAll = () => {
     { id: "rank", label: "Rank", minWidth: 100, align: "right" },
     { id: "score", label: "Score", minWidth: 170, align: "right" },
     { id: "query", label: "Query", minWidth: 170, align: "right" },
+    {
+      id: "geographic_locations",
+      label: "Location",
+      minWidth: 170,
+      align: "right",
+    },
   ];
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -48,13 +54,63 @@ const SearchAll = () => {
         responseType: "json",
       });
       const rows = Array.from(JSON.parse(response.data));
-      console.log(typeof(rows));
+      console.log(typeof rows);
       setSearchResults(rows);
       console.log(rows);
     } catch (error) {
       console.log(error);
     }
   };
+
+  function fixedHeaderContent() {
+    return (
+      <TableRow>
+        {columns.map((column) => (
+          <TableCell
+            key={column.id}
+            variant="head"
+            align={column.numeric || false ? "right" : "left"}
+            style={{ width: column.width }}
+            sx={{
+              backgroundColor: "background.paper",
+            }}
+          >
+            {column.label}
+          </TableCell>
+        ))}
+      </TableRow>
+    );
+  }
+
+  function rowContent(_index, row) {
+    return (
+      <React.Fragment>
+        {columns.map((column) => (
+          <TableCell
+            key={column.id}
+            align={column.numeric || false ? "right" : "left"}
+          >
+            {row[column.id]}
+          </TableCell>
+        ))}
+      </React.Fragment>
+    );
+  }
+
+  const VirtuosoTableComponents = {
+    Scroller: React.forwardRef((props, ref) => (
+      <TableContainer component={Paper} {...props} ref={ref} />
+    )),
+    Table: (props) => (
+      <Table {...props} style={{ borderCollapse: "separate" }} />
+    ),
+    TableHead,
+    TableRow: ({ item: _item, ...props }) => <TableRow {...props} />,
+    TableBody: React.forwardRef((props, ref) => (
+      <TableBody {...props} ref={ref} />
+    )),
+  };
+
 
   return (
     <Box>
@@ -86,7 +142,7 @@ const SearchAll = () => {
       <Typography>Search Results</Typography>
       {searchResults.length !== 0 && (
         <Box>
-          <TableContainer component={Paper}>
+          {/* <TableContainer component={Paper}>
             <Table aria-label="search results table">
               <TableHead>
                 <TableRow>
@@ -125,7 +181,15 @@ const SearchAll = () => {
                 })}
               </TableBody>
             </Table>
-          </TableContainer>
+          </TableContainer> */}
+          <Paper style={{ height: 400, width: "100%" }}>
+            <TableVirtuoso
+              data={searchResults}
+              components={VirtuosoTableComponents}
+              fixedHeaderContent={fixedHeaderContent}
+              itemContent={rowContent}
+            />
+          </Paper>
         </Box>
       )}
     </Box>

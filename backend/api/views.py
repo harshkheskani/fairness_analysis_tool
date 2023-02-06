@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from api.searchQuery.queryDataset import searchQuery
+from api.searchQuery.indexStats import indexStats
 import json
 from django.http import HttpResponse, JsonResponse
 
@@ -21,3 +22,11 @@ def searchResultsPost (request):
         return JsonResponse(searchResults, safe=False)
     else:
         return HttpResponse ("This Doesn't work")
+    
+@csrf_exempt
+def getIndexStats (request):
+    if request.method == "GET":
+        return JsonResponse(indexStats(), safe =False)
+    else:
+        return HttpResponse("Stats not received")
+
