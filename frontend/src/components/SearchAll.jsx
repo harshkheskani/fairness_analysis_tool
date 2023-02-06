@@ -81,7 +81,7 @@ const SearchAll = () => {
     return (
       <React.Fragment>
         {columns.map((column) => (
-          <TableCell
+          <TableCell 
             key={column.id}
             align={column.numeric || false ? "right" : "left"}
             sx={{
