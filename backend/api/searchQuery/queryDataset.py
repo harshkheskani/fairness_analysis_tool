@@ -16,8 +16,12 @@ def searchQuery(search):
     indexPath = str(__location__) + \
         "/monicaLongNewSecond/nfs/trec21MonicaLong/"
     index = pt.IndexFactory.of(indexPath)
+
+
+
     # Experiments
-    tf_idf = pt.BatchRetrieve(index, wmodel="TF_IDF")
+    tf_idf = pt.BatchRetrieve(index, wmodel="TF_IDF", metadata = ["docno","title", "text","url"])
+
     # BM25 = pt.BatchRetrieve(index, wmodel = "BM25")
     # PL2 = pt.BatchRetrieve(index, wmodel = "PL2")
 
