@@ -11,7 +11,6 @@ def searchQuery(search):
     __location__ = os.path.realpath(os.path.join(
         os.getcwd(), os.path.dirname(__file__)))
     __location__ = __location__.replace("\\", "/")
-    # Index path (make dynamic)
 
     indexPath = str(__location__) + \
         "/monicaLongNewSecond/nfs/trec21MonicaLong/"

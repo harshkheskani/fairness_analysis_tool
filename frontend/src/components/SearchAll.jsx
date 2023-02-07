@@ -24,16 +24,13 @@ const SearchAll = () => {
   const columns = [
     { id: "qid", label: "ID", minWidth: 100, align: "right" },
     { id: "docid", label: "Document\u00a0ID", minWidth: 170, align: "right" },
+    { id: "title" , label: "Docuemnt\u00a0Title", minWidth: 170, align: "right"},
     { id: "docno", label: "Document\u00a0No", minWidth: 170, align: "right" },
     { id: "rank", label: "Rank", minWidth: 100, align: "right" },
     { id: "score", label: "Score", minWidth: 170, align: "right" },
     { id: "query", label: "Query", minWidth: 170, align: "right" },
-    {
-      id: "geographic_locations",
-      label: "Location",
-      minWidth: 170,
-      align: "right",
-    },
+    { id: "geographic_locations", label:"Location", minWidth: 170, align: "right"},
+    { id: "url", label: "url", minWidth: 170, align: "right"},
   ];
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -141,7 +138,7 @@ const SearchAll = () => {
 
       {searchResults.length !== 0 && (
         <Box sx = {{m:2}}>
-          <Typography variant="h4" color={colors.greenAccent[500]}>Search Results</Typography>
+          <Typography variant="h4" color={colors.grey[200]}>Search Results</Typography>
           <Paper style={{ height: 400, width: "100%" }}>
             <TableVirtuoso
               data={searchResults}
