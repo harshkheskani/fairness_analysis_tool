@@ -17,21 +17,12 @@ import {
   Paper,
 } from "@mui/material";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { TableVirtuoso } from "react-virtuoso";
 
 
 const SearchAll = () => {
-  const columns = [
-    { id: "qid", label: "ID", minWidth: 100, align: "right" },
-    { id: "docid", label: "Document\u00a0ID", minWidth: 170, align: "right" },
-    { id: "title" , label: "Docuemnt\u00a0Title", minWidth: 170, align: "right"},
-    { id: "docno", label: "Document\u00a0No", minWidth: 170, align: "right" },
-    { id: "rank", label: "Rank", minWidth: 100, align: "right" },
-    { id: "score", label: "Score", minWidth: 170, align: "right" },
-    { id: "query", label: "Query", minWidth: 170, align: "right" },
-    { id: "geographic_locations", label:"Location", minWidth: 170, align: "right"},
-    { id: "url", label: "url", minWidth: 170, align: "right"},
-  ];
+ 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [searchInput, setSearchInput] = useState("");
@@ -54,6 +45,29 @@ const SearchAll = () => {
     }
   };
 
+  const columns = [
+    { id: "qid", label: "ID", minWidth: 50, align: "right" },
+    { id: "docid", label: "Document\u00a0ID", minWidth: 75, align: "right" },
+    {
+      id: "title",
+      label: "Document\u00a0Title",
+      minWidth: 250,
+      align: "right",
+    },
+    { id: "docno", label: "Document\u00a0No", minWidth: 50, align: "right" },
+    { id: "rank", label: "Rank", minWidth: 50, align: "right" },
+    { id: "score", label: "Score", minWidth: 170, align: "right" },
+    { id: "query", label: "Query", minWidth: 50, align: "right" },
+    {
+      id: "geographic_locations",
+      label: "Location",
+      minWidth: 300,
+      align: "right",
+    },
+    { id: "url", label: "url", minWidth: 300, align: "right" },
+  ];
+
+
   function fixedHeaderContent() {
     return (
       <TableRow>
@@ -74,16 +88,21 @@ const SearchAll = () => {
     );
   }
 
+  let navigate = useNavigate();
+  function handleRowClick(row) {
+    navigate(`/doctext/${row.docid}`, { state: { text: row.text } });
+  }
+
   function rowContent(_index, row) {
     return (
       <React.Fragment>
         {columns.map((column) => (
-          <TableCell 
+          <TableCell
             key={column.id}
             align={column.numeric || false ? "right" : "left"}
             sx={{
               backgroundColor: colors.primary[400],
-            }}            
+            }}
           >
             {row[column.id]}
           </TableCell>
@@ -100,12 +119,13 @@ const SearchAll = () => {
       <Table {...props} style={{ borderCollapse: "separate" }} />
     ),
     TableHead,
-    TableRow: ({ item: _item, ...props }) => <TableRow {...props} />,
+    TableRow: ({ item: _item, ...props }) => (
+      <TableRow {...props} onClick={() => handleRowClick(_item)} />
+    ),
     TableBody: React.forwardRef((props, ref) => (
       <TableBody {...props} ref={ref} />
     )),
   };
-
 
   return (
     <Box>
@@ -113,7 +133,7 @@ const SearchAll = () => {
         display="flex"
         backgroundColor={colors.primary[400]}
         borderRadius="3px"
-        sx = {{m: 2}}
+        sx={{ m: 2 }}
       >
         <FormControl>
           <InputBase
@@ -137,8 +157,10 @@ const SearchAll = () => {
       </Box>
 
       {searchResults.length !== 0 && (
-        <Box sx = {{m:2}}>
-          <Typography variant="h4" color={colors.grey[200]}>Search Results</Typography>
+        <Box sx={{ m: 2 }}>
+          <Typography variant="h4" color={colors.grey[200]}>
+            Search Results
+          </Typography>
           <Paper style={{ height: 400, width: "100%" }}>
             <TableVirtuoso
               data={searchResults}

@@ -6,7 +6,7 @@ import Dashboard from "./scenes/dashboard";
 import HomePage from './scenes/home';
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
-import Instructions from "./scenes/instructions";
+import RenderDocText from "./components/RenderDocText";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -22,8 +22,9 @@ function App() {
             <Topbar setIsSidebar={setIsSidebar} />
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/instructions" element={<Instructions />} />
+              <Route path="/doctext/:id" element={<RenderDocText />} />
               <Route path="/dashboard" element={<Dashboard />} />
+
             </Routes>
           </main>
         </div>
