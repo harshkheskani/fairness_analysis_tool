@@ -26,7 +26,7 @@ def searchResultsPost (request):
 @csrf_exempt
 def getIndexStats (request):
     if request.method == "GET":
-        return JsonResponse(indexStats(), safe =False)
+        return JsonResponse(indexStats(), safe=False)
     else:
         return HttpResponse("Stats not received")
 

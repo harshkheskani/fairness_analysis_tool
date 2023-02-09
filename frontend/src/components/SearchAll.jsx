@@ -20,14 +20,13 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { TableVirtuoso } from "react-virtuoso";
 
-
 const SearchAll = () => {
- 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-
+  const [allLocations, setAllLocations] = useState([]);
+  
   const searchQuery = async (searchObj) => {
     try {
       const response = await axios({
@@ -40,6 +39,19 @@ const SearchAll = () => {
       console.log(typeof rows);
       setSearchResults(rows);
       console.log(rows);
+      const locationsCount = rows.reduce((acc, curr) => {
+        curr.geographic_locations.forEach((location) => {
+          if (acc[location]) {
+            acc[location]++;
+          } else {
+            acc[location] = 1;
+          }
+        });
+        return acc;
+      }, {});
+
+      console.log(locationsCount);
+      setAllLocations(locationsCount);
     } catch (error) {
       console.log(error);
     }
@@ -66,7 +78,6 @@ const SearchAll = () => {
     },
     { id: "url", label: "url", minWidth: 300, align: "right" },
   ];
-
 
   function fixedHeaderContent() {
     return (
