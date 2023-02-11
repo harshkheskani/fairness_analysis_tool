@@ -59,9 +59,6 @@ const Dashboard = () => {
         </Box>
       </Box>
 
-      <Box>
-        <SearchAll />
-      </Box>
       {/* GRID & CHARTS */}
       <Box
         display="grid"
@@ -71,14 +68,14 @@ const Dashboard = () => {
       >
         {/* ROW 1 */}
         <Box
-          gridColumn="span 4"
+          gridColumn="span 3"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
         >
           <StatBox
-            title="10,000"
+            title="6,280,328"
             subtitle="Number of Documents"
             progress="0.75"
             increase=""
@@ -90,15 +87,15 @@ const Dashboard = () => {
           />
         </Box>
         <Box
-          gridColumn="span 4"
+          gridColumn="span 3"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
         >
           <StatBox
-            title="40"
-            subtitle="Unique Authors"
+            title="3,873,118"
+            subtitle="Number of Terms"
             progress="0.2"
             increase=""
             icon={
@@ -109,15 +106,15 @@ const Dashboard = () => {
           />
         </Box>
         <Box
-          gridColumn="span 4"
+          gridColumn="span 3"
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
           justifyContent="center"
         >
           <StatBox
-            title="12"
-            subtitle="Topics"
+            title="453,365,687"
+            subtitle="Number of Postings"
             progress="0.30"
             increase=""
             icon={
@@ -127,21 +124,43 @@ const Dashboard = () => {
             }
           />
         </Box>
-
-        {/* ROW 2 */}
-
-        
         <Box
-          gridColumn="span 12"
-          gridRow="span 5"
+          gridColumn="span 3"
           backgroundColor={colors.primary[400]}
-          overflow="auto"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
         >
-        <WorldMap />  
+          <StatBox
+            title="661,458,642"
+            subtitle="Number of Tokens"
+            progress="0.30"
+            increase=""
+            icon={
+              <TopicIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
         </Box>
-
-        {/* ROW 3 */}
+        {/* ROW 2 */}
       </Box>
+      {/* Search */}
+      <Box>
+        <SearchAll />
+      </Box>
+
+      <Box
+        gridColumn="span 12"
+        gridRow="span 5"
+        backgroundColor={colors.primary[400]}
+        overflow="auto"
+      >
+        <WorldMap />
+      </Box>
+
+      {/* ROW 3 */}
+
       <Box
         gridColumn="span 8"
         gridRow="span 2"

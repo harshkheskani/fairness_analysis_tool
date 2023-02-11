@@ -26,7 +26,7 @@ const SearchAll = () => {
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [allLocations, setAllLocations] = useState([]);
-  
+
   const searchQuery = async (searchObj) => {
     try {
       const response = await axios({
@@ -131,12 +131,33 @@ const SearchAll = () => {
     ),
     TableHead,
     TableRow: ({ item: _item, ...props }) => (
-      <TableRow {...props} onClick={() => handleRowClick(_item)} />
+      <TableRow {...props} onClick={() => getWikipediaText(_item.url)} />
     ),
     TableBody: React.forwardRef((props, ref) => (
       <TableBody {...props} ref={ref} />
     )),
   };
+
+  const getWikipediaText = async (url) => {
+    const title = decodeURIComponent(url.split("/").pop());
+    const apiUrl = `https://en.wikipedia.org/w/api.php?action=query&origin=*&prop=extracts&rvprop=content&format=json&titles=${encodeURIComponent(
+      title
+    )}`;
+
+    try {
+      const response = await axios.get(apiUrl);
+      const pageId = Object.keys(response.data.query.pages)[0];
+      const wikipediaText = response.data.query.pages[pageId].revisions[0]["*"];
+
+      return wikipediaText;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // getWikipediaText('https://en.wikipedia.org/wiki/JavaScript').then(text => {
+  //   console.log(text);
+  // });
 
   return (
     <Box>

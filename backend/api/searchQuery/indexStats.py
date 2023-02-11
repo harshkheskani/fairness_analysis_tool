@@ -23,3 +23,5 @@ def indexStats():
     jsonString = json.dumps(baseString)
 
     return jsonString
+
+print(indexStats())
