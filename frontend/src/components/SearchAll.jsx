@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { tokens } from "../theme";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
@@ -99,7 +99,7 @@ const SearchAll = () => {
     );
   }
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   function handleRowClick(row) {
     navigate(`/doctext/${row.docid}`, { state: { text: row.text } });
   }
@@ -131,36 +131,39 @@ const SearchAll = () => {
     ),
     TableHead,
     TableRow: ({ item: _item, ...props }) => (
-      <TableRow {...props} onClick={() => getWikipediaText(_item.url)} />
+      <TableRow {...props} onClick={() => getWikipediaPage(_item)} />
     ),
     TableBody: React.forwardRef((props, ref) => (
       <TableBody {...props} ref={ref} />
     )),
   };
 
-  const getWikipediaText = async (url) => {
-    const title = decodeURIComponent(url.split("/").pop());
-    const apiUrl = `https://en.wikipedia.org/w/api.php?action=query&origin=*&prop=extracts&rvprop=content&format=json&titles=${encodeURIComponent(
-      title
-    )}`;
+  const [searchBody, setSearchBody] = useState("");
 
+  const getWikipediaPage = async (row) => {
     try {
-      const response = await axios.get(apiUrl);
-      const pageId = Object.keys(response.data.query.pages)[0];
-      const wikipediaText = response.data.query.pages[pageId].revisions[0]["*"];
+      const response = await axios({
+        method: "GET",
+        url: `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=revisions&origin=*&rvprop=content&titles=${row.title}`,
+      });
 
-      return wikipediaText;
-    } catch (error) {
-      console.error(error);
+      console.log(response.data.query.pages);
+
+      const pageId = Object.keys(response.data.query.pages)[0];
+
+      const text = response.data.query.pages[pageId].revisions[0]["*"];
+      console.log(text);
+      setSearchBody(text);
+
+    } catch (e) {
+
+      console.log(e);
     }
   };
 
-  // getWikipediaText('https://en.wikipedia.org/wiki/JavaScript').then(text => {
-  //   console.log(text);
-  // });
-
   return (
     <Box>
+      
       <Box
         display="flex"
         backgroundColor={colors.primary[400]}

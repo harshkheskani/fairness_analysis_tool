@@ -18,7 +18,7 @@ const Dashboard = () => {
   const [collectionStats, setCollectionStats] = useState([]);
 
   useEffect(() => {
-    // The code inside this block will run as soon as the component is rendered
+    // The code inside this block will run as soon as the component is rendered 
     const getIndexStats = async () => {
       try {
         const response = await axios({
@@ -151,8 +151,8 @@ const Dashboard = () => {
       </Box>
 
       <Box
-        gridColumn="span 12"
-        gridRow="span 5"
+        gridColumn="span 10"
+        gridRow="span 2"
         backgroundColor={colors.primary[400]}
         overflow="auto"
       >
