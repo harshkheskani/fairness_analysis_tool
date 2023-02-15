@@ -99,11 +99,6 @@ const SearchAll = () => {
     );
   }
 
-  const navigate = useNavigate();
-  function handleRowClick(row) {
-    navigate(`/doctext/${row.docid}`, { state: { text: row.text } });
-  }
-
   function rowContent(_index, row) {
     return (
       <React.Fragment>
@@ -138,9 +133,12 @@ const SearchAll = () => {
     )),
   };
 
-  const [searchBody, setSearchBody] = useState("");
+  // const [searchBody, setSearchBody] = useState("");
+  const [row, setRow] = useState();
+  let navigate = useNavigate();
 
   const getWikipediaPage = async (row) => {
+    setRow(row);
     try {
       const response = await axios({
         method: "GET",
@@ -148,22 +146,21 @@ const SearchAll = () => {
       });
 
       console.log(response.data.query.pages);
-
+      console.log(row);
       const pageId = Object.keys(response.data.query.pages)[0];
+      const searchBody = response.data.query.pages[pageId].revisions[0]["*"];
 
-      const text = response.data.query.pages[pageId].revisions[0]["*"];
-      console.log(text);
-      setSearchBody(text);
-
-    } catch (e) {
-
-      console.log(e);
+      console.log(searchBody);
+      if (searchBody !== "") {
+        navigate(`/doctext/${row.docid}`, { state: { searchBody } });
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
   return (
     <Box>
-      
       <Box
         display="flex"
         backgroundColor={colors.primary[400]}
