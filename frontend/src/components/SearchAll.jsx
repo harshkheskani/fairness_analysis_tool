@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { tokens } from "../theme";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import WorldMap from "./WorldMap";
 import {
   Box,
   IconButton,
@@ -16,7 +17,7 @@ import {
   TableCell,
   Paper,
 } from "@mui/material";
-import axios from "axios";
+import axios, { all } from "axios";
 import { useNavigate } from "react-router-dom";
 import { TableVirtuoso } from "react-virtuoso";
 
@@ -133,7 +134,6 @@ const SearchAll = () => {
     )),
   };
 
-  // const [searchBody, setSearchBody] = useState("");
   const [row, setRow] = useState();
   let navigate = useNavigate();
 
@@ -142,11 +142,9 @@ const SearchAll = () => {
     try {
       const response = await axios({
         method: "GET",
-        url: `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=revisions&origin=*&rvprop=content&titles=${row.title}`,
+        url: `https://en.wikipedia.org/w/api.php?action=parse&format=json&prop=revisions&origin=*&rvprop=content&title=${row.title}`,
       });
 
-      console.log(response.data.query.pages);
-      console.log(row);
       const pageId = Object.keys(response.data.query.pages)[0];
       const searchBody = response.data.query.pages[pageId].revisions[0]["*"];
 
@@ -203,6 +201,15 @@ const SearchAll = () => {
           </Paper>
         </Box>
       )}
+
+      <Box
+        gridColumn="span 10"
+        gridRow="span 2"
+        backgroundColor={colors.primary[400]}
+        overflow="auto"
+      >
+        <WorldMap continentCount = {allLocations} />
+      </Box>
     </Box>
   );
 };

@@ -10,7 +10,7 @@ import StatBox from "../../components/StatBox";
 import TopicIcon from "@mui/icons-material/Topic";
 import SearchAll from "../../components/SearchAll";
 import axios from "axios";
-import WorldMap from "../../components/WorldMap";
+
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -26,7 +26,7 @@ const Dashboard = () => {
           url: "http://127.0.0.1:8000/api/indexStats/",
           responseType: "json",
         });
-        console.log(response);
+        //console.log(response);
         const initialData = JSON.parse(response.data);
         setCollectionStats(initialData);
       } catch (error) {
@@ -34,7 +34,7 @@ const Dashboard = () => {
       }
     };
     getIndexStats();
-    console.log("The component has been rendered!");
+    //console.log("The component has been rendered!");
   }, []);
 
   return (
@@ -150,14 +150,6 @@ const Dashboard = () => {
         <SearchAll />
       </Box>
 
-      <Box
-        gridColumn="span 10"
-        gridRow="span 2"
-        backgroundColor={colors.primary[400]}
-        overflow="auto"
-      >
-        <WorldMap />
-      </Box>
 
       {/* ROW 3 */}
 

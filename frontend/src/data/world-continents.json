@@ -7573,7 +7573,6 @@
   "objects": {
     "continent": {
       "type": "GeometryCollection",
-      
       "geometries": [
         {
           "arcs": [
@@ -7595,8 +7594,8 @@
             [[17]]
           ],
           "type": "MultiPolygon",
-          "id": "SA",
-          "properties": { "continent": "South America" }
+          "id": "LAC",
+          "properties": { "continent": "Latin America and the Caribbean" }
         },
         {
           "arcs": [
@@ -7842,6 +7841,7 @@
           "id": "AF",
           "properties": { "continent": "Africa" }
         }
+
       ]
     }
   }
