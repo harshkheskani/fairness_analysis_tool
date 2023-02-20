@@ -20,6 +20,7 @@ import {
 import axios, { all } from "axios";
 import { useNavigate } from "react-router-dom";
 import { TableVirtuoso } from "react-virtuoso";
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const SearchAll = () => {
   const theme = useTheme();
@@ -157,6 +158,8 @@ const SearchAll = () => {
     }
   };
 
+  const [content, setContent] = useState("");
+
   return (
     <Box>
       <Box
@@ -208,7 +211,9 @@ const SearchAll = () => {
         backgroundColor={colors.primary[400]}
         overflow="auto"
       >
-        <WorldMap continentCount = {allLocations} />
+         
+      <WorldMap setTooltipContent={setContent} />
+      <ReactTooltip>{content}</ReactTooltip>
       </Box>
     </Box>
   );
