@@ -4637,7 +4637,7 @@
           "type": "MultiPolygon",
           "properties": {
             "OBJECTID": 4,
-            "CONTINENT": "North America",
+            "CONTINENT": "Northern America",
             "SQMI": 9339528.4866,
             "SQKM": 24189364.532,
             "Shape_Leng": 3954.89243026,

@@ -20,36 +20,52 @@ const WorldMap = ({ continentCount }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  //search query counts
-  const [data, setData] = useState({ continentCount });
-  const [total, setTotal] = useState(0);
-
-  useEffect(() => {
-    if (data && Object.keys(data).length > 0) {
-      const newTotal = Object.values(data).reduce((acc, val) => acc + val, 0);
-      setTotal(newTotal);
-      console.log(total);
-    }
-  }, [data]);
-
   // Full data set: country count
   const initialData = [
-    { name: "unknown", value: 2557234 },
-    { name: "Europe", value: 1289747 },
-    { name: "North America", value: 1134091 },
-    { name: "Asia", value: 600711 },
-    { name: "Latin America and the Caribbean", value: 185393 },
-    { name: "Oceania", value: 157943 },
-    { name: "Africa", value: 131603 },
-    { name: "Antarctica", value: 9626 },
+    { name: "unknown", value: 2557234, percentage: 42.15 },
+    { name: "Europe", value: 1289747, percentage: 21.26 },
+    { name: "Northern America", value: 1134091, percentage:  18.69 },
+    { name: "Asia", value: 600711, percentage: 9.90 },
+    { name: "Latin America and the Caribbean", value: 185393, percentage: 3.06 },
+    { name: "Oceania", value: 157943, percentage: 2.60 },
+    { name: "Africa", value: 131603, percentage: 2.17},
+    { name: "Antarctica", value: 9626, percentage: 0.16 },
   ];
 
+
+  // updating map data
+  const [mapPercentageData, setMapPercentageData] = useState(initialData);
+  useEffect(() => {
+    if (Object.keys(continentCount).length > 0) {
+      const formattedMapData = [];
+      const valueSum = Object.values(continentCount).reduce((a, b) => a + b, 0);
+      for (let key in continentCount) {
+        if (continentCount.hasOwnProperty(key)) {
+          const searchPercentage = (continentCount[key] / valueSum) * 100;
+          // create a new object with the desired key names
+          let newObj = {
+            name: key,
+            value: continentCount[key],
+            percentage: searchPercentage.toFixed(2),
+          };
+          // append the new object to the array
+          formattedMapData.push(newObj);
+        }
+      }
+      setMapPercentageData(formattedMapData);
+    }
+  }, [continentCount]);
+
+  console.log(mapPercentageData)
+
   // Convert country counts, convert percentage
-  const totalCount = initialData.reduce((sum, { value }) => sum + value, 0);
-  const dataPercentage = initialData.map(({ name, value }) => ({
-    name,
-    percentage: (value / totalCount) * 100,
-  }));
+  // const totalCountInitialData = initialData.reduce(
+  //   (sum, { value }) => sum + value
+  // );
+  // const dataPercentage = mapPercentageData.map(({ name, value }) => ({
+  //   name,
+  //   percentage: (value / totalCountInitialData) * 100,
+  // }));
 
   // Color Scale for maps
   const colorScale = scaleLinear()
@@ -61,10 +77,9 @@ const WorldMap = ({ continentCount }) => {
   const handleMouseEnter = (event, geo) => {
     const { CONTINENT } = geo.properties;
     // Get the data for the hovered-over geography
-    const d = dataPercentage.find((s) => s.name === CONTINENT);
-    console.log(d);
+    const d = mapPercentageData.find((s) => s.name === CONTINENT);
     // Set the tooltip content to the name and percentage of the geography
-    setTooltipContent(`${CONTINENT}: ${d ? d.percentage.toFixed(2) : "N/A"}%`);
+    setTooltipContent(`${CONTINENT}: ${d ? d.percentage : "N/A"}%`);
   };
 
   // Function to reset the tooltip
@@ -79,18 +94,19 @@ const WorldMap = ({ continentCount }) => {
         scale: 147,
       }}
     >
-      {/* {renderTooltip()} */}
       <Sphere stroke="#E4E5E6" strokeWidth={0.5} />
       <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
       <Geographies geography={continentsFile}>
         {({ geographies }) =>
           geographies.map((geo) => {
-            const d = dataPercentage.find(
+            const d = mapPercentageData.find(
               (s) => s.name === geo.properties.CONTINENT
             );
             return (
               <Tooltip
-                title={`${geo.properties.CONTINENT}: ${d ? d.percentage.toFixed(2) : "N/A"}%`}
+                title={`${geo.properties.CONTINENT}: ${
+                  d ? d.percentage : "N/A"
+                }%`}
                 key={geo.properties.CONTINENT}
               >
                 <Geography

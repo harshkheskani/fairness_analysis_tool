@@ -17,14 +17,15 @@ import {
   TableCell,
   Paper,
 } from "@mui/material";
-import axios, { all } from "axios";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { TableVirtuoso } from "react-virtuoso";
-import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const SearchAll = () => {
+  
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+ 
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [allLocations, setAllLocations] = useState([]);
@@ -211,9 +212,7 @@ const SearchAll = () => {
         backgroundColor={colors.primary[400]}
         overflow="auto"
       >
-         
-      <WorldMap setTooltipContent={setContent} />
-      <ReactTooltip>{content}</ReactTooltip>
+        <WorldMap continentCount = {allLocations}/>
       </Box>
     </Box>
   );
