@@ -156,15 +156,12 @@ const SearchAll = () => {
     try {
       const response = await axios({
         method: "GET",
-        url: `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=revisions&origin=*&rvprop=content&titles=${row.title}`,
+        url: `https://en.wikipedia.org/w/api.php?action=parse&origin=*&page=${row.title}&format=json`,
       });
-
-      const pageId = Object.keys(response.data.query.pages)[0];
-      const searchBody = response.data.query.pages[pageId].revisions[0]["*"];
-      const formattedSearchBody = getWikipediaPage(searchBody)
-      
-      if (searchBody !== "") {
-        navigate(`/doctext/${row.docid}`, { state: { formattedSearchBody } });
+  
+      const html = response.data.parse.text["*"];
+      if (html !== "") {
+        navigate(`/doctext/${row.docid}`, { state: { html } });
       }
     } catch (err) {
       console.log(err);
