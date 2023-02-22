@@ -32,6 +32,10 @@ const WorldMap = ({ continentCount }) => {
     { name: "Antarctica", value: 9626, percentage: 0.16 },
   ];
 
+  function getPercentageByName(name) {
+    const region = initialData.find(region => region.name === name);
+    return region ? region.percentage : null;
+  }
 
   // updating map data
   const [mapPercentageData, setMapPercentageData] = useState(initialData);
@@ -42,11 +46,14 @@ const WorldMap = ({ continentCount }) => {
       for (let key in continentCount) {
         if (continentCount.hasOwnProperty(key)) {
           const searchPercentage = (continentCount[key] / valueSum) * 100;
+          const expectedExposure = (searchPercentage / getPercentageByName(key)) * 100
+          console.log(continentCount[key])
           // create a new object with the desired key names
           let newObj = {
             name: key,
             value: continentCount[key],
-            percentage: searchPercentage.toFixed(2),
+            percentage: expectedExposure.toFixed(2),
+            // expectedExposure: expectedExposure.toFixed(2),
           };
           // append the new object to the array
           formattedMapData.push(newObj);
@@ -57,15 +64,6 @@ const WorldMap = ({ continentCount }) => {
   }, [continentCount]);
 
   console.log(mapPercentageData)
-
-  // Convert country counts, convert percentage
-  // const totalCountInitialData = initialData.reduce(
-  //   (sum, { value }) => sum + value
-  // );
-  // const dataPercentage = mapPercentageData.map(({ name, value }) => ({
-  //   name,
-  //   percentage: (value / totalCountInitialData) * 100,
-  // }));
 
   // Color Scale for maps
   const colorScale = scaleLinear()
@@ -79,6 +77,7 @@ const WorldMap = ({ continentCount }) => {
     // Get the data for the hovered-over geography
     const d = mapPercentageData.find((s) => s.name === CONTINENT);
     // Set the tooltip content to the name and percentage of the geography
+    
     setTooltipContent(`${CONTINENT}: ${d ? d.percentage : "N/A"}%`);
   };
 
