@@ -137,6 +137,18 @@ const SearchAll = () => {
   };
 
   const [row, setRow] = useState();
+
+
+  const renderWikitext = async (wikitext) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/enwiki/v1/transform/wikitext/to/html?wikitext=${encodeURIComponent(wikitext)}`);
+      return response.data.html;
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  };
+
   let navigate = useNavigate();
 
   const getWikipediaPage = async (row) => {
@@ -144,15 +156,15 @@ const SearchAll = () => {
     try {
       const response = await axios({
         method: "GET",
-        url: `https://en.wikipedia.org/w/api.php?action=parse&format=json&prop=revisions&origin=*&rvprop=content&title=${row.title}`,
+        url: `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=revisions&origin=*&rvprop=content&titles=${row.title}`,
       });
 
       const pageId = Object.keys(response.data.query.pages)[0];
       const searchBody = response.data.query.pages[pageId].revisions[0]["*"];
-
-      console.log(searchBody);
+      const formattedSearchBody = getWikipediaPage(searchBody)
+      
       if (searchBody !== "") {
-        navigate(`/doctext/${row.docid}`, { state: { searchBody } });
+        navigate(`/doctext/${row.docid}`, { state: { formattedSearchBody } });
       }
     } catch (err) {
       console.log(err);
