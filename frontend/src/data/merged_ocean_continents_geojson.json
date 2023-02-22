@@ -175395,35 +175395,6 @@
         },
         {
           "arcs": [
-            [[185]],
-            [[186]],
-            [[187]],
-            [[188]],
-            [[189]],
-            [[190]],
-            [[191]],
-            [[192]],
-            [[193]],
-            [[194]]
-          ],
-          "type": "MultiPolygon",
-          "properties": {
-            "fid": 3,
-            "OBJECTID": 3,
-            "CONTINENT": "Australia",
-            "SQMI": 2973612.2055,
-            "SQKM": 7701651.076,
-            "Shape_Leng": 252.16531086,
-            "Shape_Area": 695.539920644,
-            "featurecla": null,
-            "scalerank": null,
-            "min_zoom": null,
-            "layer": "continent-poly — Continents.shp",
-            "path": "/vsizip/C:\\Users\\hkhes\\Downloads\\continent-poly.zip/Continents.shp|layername=Continents"
-          }
-        },
-        {
-          "arcs": [
             [[195]],
             [[196]],
             [[197]],
@@ -175526,7 +175497,7 @@
           "properties": {
             "fid": 4,
             "OBJECTID": 4,
-            "CONTINENT": "North America",
+            "CONTINENT": "Northern America",
             "SQMI": 9339528.4866,
             "SQKM": 24189364.532,
             "Shape_Leng": 3954.89243026,
@@ -175540,6 +175511,16 @@
         },
         {
           "arcs": [
+            [[185]],
+            [[186]],
+            [[187]],
+            [[188]],
+            [[189]],
+            [[190]],
+            [[191]],
+            [[192]],
+            [[193]],
+            [[194]],
             [[293]],
             [[294]],
             [[295]],
@@ -175617,7 +175598,7 @@
           "properties": {
             "fid": 6,
             "OBJECTID": 6,
-            "CONTINENT": "South America",
+            "CONTINENT": "Latin America and the Caribbean",
             "SQMI": 6856255.3355,
             "SQKM": 17757690.859,
             "Shape_Leng": 622.552581903,
@@ -176116,7 +176097,7 @@
           "properties": {
             "fid": 9,
             "OBJECTID": null,
-            "CONTINENT": null,
+            "CONTINENT": "unknown",
             "SQMI": null,
             "SQKM": null,
             "Shape_Leng": null,

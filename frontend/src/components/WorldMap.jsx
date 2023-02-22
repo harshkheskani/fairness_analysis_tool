@@ -12,9 +12,8 @@ import {
   Graticule,
 } from "react-simple-maps";
 import { feature } from "topojson-client";
-import oceanTopoJsonFile from "../data/merged_ocean_continents_geojson.json";
-import continentsFile from "../data/continents.json";
 import Tooltip from "@mui/material/Tooltip";
+import continentsFile from "../data/merged_ocean_continents_geojson.json"
 
 const WorldMap = ({ continentCount }) => {
   const theme = useTheme();
