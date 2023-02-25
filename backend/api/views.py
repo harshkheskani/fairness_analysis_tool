@@ -18,7 +18,8 @@ def getRoutes (request):
 def searchResultsPost (request):
     if request.method == "POST":
         content = json.loads (request.body.decode('utf-8'))
-        searchResults = searchQuery(content["searchTerm"])
+        searchResults = searchQuery(content)
+        # print(searchResults)
         return JsonResponse(searchResults, safe=False)
     else:
         return HttpResponse ("This Doesn't work")

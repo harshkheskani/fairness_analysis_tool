@@ -43,10 +43,10 @@ const SearchAll = () => {
         data: searchObj,
         responseType: "json",
       });
-      const rows = Array.from(JSON.parse(response.data));
-      console.log(typeof rows);
+      console.log(response.data);
+      const rows = Array.from(response.data);
+      //console.log(rows)
       setSearchResults(rows);
-      console.log(rows);
       const locationsCount = rows.reduce((acc, curr) => {
         curr.geographic_locations.forEach((location) => {
           if (acc[location]) {
@@ -199,7 +199,7 @@ const SearchAll = () => {
     };
   }
   const [chosenRetrievalModel, setChosenRetrievalModel] = React.useState([]);
-  console.log(chosenRetrievalModel)
+  
   const handleChange = (event) => {
     const {
       target: { value },

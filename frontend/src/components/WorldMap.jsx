@@ -62,7 +62,6 @@ const WorldMap = ({ continentCount }) => {
     }
   }, [continentCount]);
 
-  console.log(mapPercentageData)
 
   // Color Scale for maps
   const colorScale = scaleLinear()
