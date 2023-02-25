@@ -7,29 +7,24 @@ if not pt.started():
 
 
 def searchQuery(search):
+    #Break Down of search Dictionary
 
-    # Break Down of search Dictionary
+    searchTerm = search["searchTerm"]
+    retrievalModels = search["retrievalModels"]
+  
 
-    searchTerm = search.get("searchTerm")
-    retrievalModels = search.get("retrievalModels")
-
-    # General Location path, to make it dynamic
     __location__ = os.path.realpath(os.path.join(
         os.getcwd(), os.path.dirname(__file__)))
     __location__ = __location__.replace("\\", "/")
 
-    # Path to the index
     indexPath = str(__location__) + \
         "/monicaLongNewSecond/nfs/trec21MonicaLong/"
     index = pt.IndexFactory.of(indexPath)
 
     # Experiments
-    tf_idf = pt.BatchRetrieve(index, wmodel="TF_IDF", metadata=[
-                              "docno", "title", "text", "url"])
-    bm25 = pt.BatchRetrieve(index, wmodel="BM25", metadata=[
-                            "docno", "title", "text", "url"])
-    pl2 = pt.BatchRetrieve(index, wmodel="PL2", metadata=[
-                           "docno", "title", "text", "url"])
+    tf_idf = pt.BatchRetrieve(index, wmodel="TF_IDF", metadata = ["docno","title","url"])
+    bm25 = pt.BatchRetrieve(index, wmodel="BM25", metadata = ["docno","title","url"])
+    pl2 = pt.BatchRetrieve(index, wmodel="PL2", metadata = ["docno","title","url"])
 
     # Topics
     topicPath = str(__location__) + "/eval-topics-with-qrels.json.gz"
@@ -52,28 +47,33 @@ def searchQuery(search):
     metadataPath = str(__location__) + "/trec_metadata.json.gz"
     metadata = pd.read_json(metadataPath, lines=True)
     metadata = metadata.rename(columns={"page_id": "docno"})
-    metadata["geographic_locations"] = metadata["geographic_locations"].apply(
-        lambda x: x if len(x) > 0 else ['unknown'])
+    metadata["geographic_locations"]=metadata["geographic_locations"].apply(lambda x: x if len(x) > 0 else ['unknown'])
     metadata["docno"] = metadata["docno"].astype(str)
+
+    # tf_idf_search = tf_idf_search.merge(metadata,on="docno")
+    # tf_idf_search = tf_idf_search.to_json(orient="records")
 
     # run experiments here
 
     results = {}
 
     for model in retrievalModels:
-        if model == "TF_IDF":
+        if model == "TF-IDF":
             tf_idf_search = (tf_idf.search(str(searchTerm))).head(100)
             tf_idf_search = tf_idf_search.merge(metadata, on="docno")
-            tf_idf_search = tf_idf_search.to_json(orient="records")
+            tf_idf_search = tf_idf_search.to_dict(orient="records")
             results["TF_IDF"] = tf_idf_search
+            print(type(tf_idf_search))
         elif model == "PL2":
             pl2_search = (pl2.search(str(searchTerm))).head(100)
             pl2_search = pl2_search.merge(metadata, on="docno")
-            pl2_search = pl2_search.to_json(orient="records")
+            pl2_search = pl2_search.to_dict(orient="records")
             results["PL2"] = pl2_search
         elif model == "BM25":
             bm25_search = (bm25.search(str(searchTerm))).head(100)
             bm25_search = bm25_search.merge(metadata, on="docno")
-            bm25_search = bm25_search.to_json(orient="records")
-            results["BM25"] = bm25
+            bm25_search = bm25_search.to_dict(orient="records")
+            results["BM25"] = bm25_search
+
     return results
+
