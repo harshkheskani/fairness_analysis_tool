@@ -41,28 +41,23 @@ const WorldMap = ({ continentCount }) => {
   // updating map data
   const [mapPercentageData, setMapPercentageData] = useState(initialData);
   useEffect(() => {
-    if (Object.keys(continentCount).length > 0) {
+    if (Object.keys(continentCount || {}).length > 0) {
       const formattedMapData = [];
       const valueSum = Object.values(continentCount).reduce((a, b) => a + b, 0);
       for (let key in continentCount) {
         if (continentCount.hasOwnProperty(key)) {
-          const searchRatio = (continentCount[key] / valueSum) ;
-          console.log(searchRatio)
-          const fullDataSetRatio = getPercentageByName(key) / 100
-          console.log(fullDataSetRatio)
-          const expectedExposure = Math.abs(searchRatio - fullDataSetRatio) * 100
-          console.log(expectedExposure)
-
+          const searchRatio = continentCount[key] / valueSum;
+          const fullDataSetRatio = getPercentageByName(key) / 100;
+          const expectedExposure =
+            Math.abs(searchRatio - fullDataSetRatio) * 100;
           // create a new object with the desired key names
           let newObj = {
             name: key,
             value: continentCount[key],
             percentage: expectedExposure.toFixed(2),
-            // expectedExposure: expectedExposure.toFixed(2),
           };
           // append the new object to the array
           formattedMapData.push(newObj);
-          // setTimeout(() => formattedMapData.push(newObj), 1000)
         }
       }
       setMapPercentageData(formattedMapData);

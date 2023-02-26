@@ -146,18 +146,24 @@ const SearchAll = () => {
         >
           <SearchIcon />
         </IconButton>
-
-  
       </Box>
 
       <Box
-          gridColumn="span 10"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          overflow="auto"
-        >
-          <TabBar tabHeadings = {chosenRetrievalModel} searchResults = {searchResults}/>
-      </Box>   
+        gridColumn="span 10"
+        gridRow="span 2"
+        backgroundColor={colors.primary[400]}
+        overflow="auto"
+      >
+        {Object.keys(searchResults).length > 0 ? (
+          <TabBar
+            tabHeadings={chosenRetrievalModel}
+            searchResults={searchResults}
+          />
+        ) : (
+          <WorldMap />
+        )}
+      </Box>
+
       {/* {searchResults.length !== 0 && (
         <Box sx={{ m: 2 }}>
           <Typography variant="h4" color={colors.grey[200]}>
