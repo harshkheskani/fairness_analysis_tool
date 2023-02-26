@@ -53,6 +53,8 @@ const ResultsTable = ({ results }) => {
       console.log(err);
     }
   };
+
+  // table data 
   const columns = [
     { id: "qid", label: "ID", minWidth: 50, align: "right" },
     { id: "docid", label: "Document\u00a0ID", minWidth: 75, align: "right" },

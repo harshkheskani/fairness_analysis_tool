@@ -62,7 +62,7 @@ def searchQuery(search):
             tf_idf_search = (tf_idf.search(str(searchTerm))).head(100)
             tf_idf_search = tf_idf_search.merge(metadata, on="docno")
             tf_idf_search = tf_idf_search.to_dict(orient="records")
-            results["TF_IDF"] = tf_idf_search
+            results["TF-IDF"] = tf_idf_search
             print(type(tf_idf_search))
         elif model == "PL2":
             pl2_search = (pl2.search(str(searchTerm))).head(100)
@@ -76,4 +76,3 @@ def searchQuery(search):
             results["BM25"] = bm25_search
 
     return results
-

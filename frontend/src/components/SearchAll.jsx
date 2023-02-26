@@ -3,6 +3,7 @@ import { tokens } from "../theme";
 import SearchIcon from "@mui/icons-material/Search";
 import WorldMap from "./WorldMap";
 import ResultsTable from "./ResultsTable";
+import TabBar from "./TabBar";
 import {
   Box,
   IconButton,
@@ -19,7 +20,6 @@ import axios from "axios";
 import TextField from "@mui/material/TextField";
 
 const SearchAll = () => {
-  
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [searchInput, setSearchInput] = useState("");
@@ -35,20 +35,8 @@ const SearchAll = () => {
         responseType: "json",
       });
       const rows = response.data;
-      console.log(rows)
+      console.log(rows);
       setSearchResults(rows);
-      const locationsCount = rows.reduce((acc, curr) => {
-        curr.geographic_locations.forEach((location) => {
-          if (acc[location]) {
-            acc[location]++;
-          } else {
-            acc[location] = 1;
-          }
-        });
-        return acc;
-      }, {});
-      console.log(locationsCount);
-      setAllLocations(locationsCount);
     } catch (error) {
       console.log(error);
     }
@@ -77,7 +65,7 @@ const SearchAll = () => {
     };
   }
   const [chosenRetrievalModel, setChosenRetrievalModel] = React.useState([]);
-  
+
   const handleChange = (event) => {
     const {
       target: { value },
@@ -150,21 +138,34 @@ const SearchAll = () => {
           type="button"
           sx={{ p: 1 }}
           onClick={() => {
-            searchQuery({ searchTerm: searchInput, retrievalModels: chosenRetrievalModel });
+            searchQuery({
+              searchTerm: searchInput,
+              retrievalModels: chosenRetrievalModel,
+            });
           }}
         >
           <SearchIcon />
         </IconButton>
+
+  
       </Box>
 
-      {searchResults.length !== 0 && (
+      <Box
+          gridColumn="span 10"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+          overflow="auto"
+        >
+          <TabBar tabHeadings = {chosenRetrievalModel} searchResults = {searchResults}/>
+      </Box>   
+      {/* {searchResults.length !== 0 && (
         <Box sx={{ m: 2 }}>
           <Typography variant="h4" color={colors.grey[200]}>
             Search Results
           </Typography>
-          <ResultsTable results = {searchResults} />
+          <ResultsTable results={searchResults} />
         </Box>
-      )}
+      )} */}
 
       <Box
         gridColumn="span 10"
@@ -172,7 +173,7 @@ const SearchAll = () => {
         backgroundColor={colors.primary[400]}
         overflow="auto"
       >
-        <WorldMap continentCount={allLocations} />
+        {/* <WorldMap continentCount={allLocations} searchResults = {searchResults} /> */}
       </Box>
     </Box>
   );

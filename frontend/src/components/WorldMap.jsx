@@ -6,14 +6,12 @@ import {
   ComposableMap,
   Geographies,
   Geography,
-  Marker,
-  ZoomableGroup,
   Sphere,
   Graticule,
 } from "react-simple-maps";
 import { feature } from "topojson-client";
 import Tooltip from "@mui/material/Tooltip";
-import continentsFile from "../data/merged_ocean_continents_geojson.json"
+import continentsFile from "../data/merged_ocean_continents_geojson.json";
 
 const WorldMap = ({ continentCount }) => {
   const theme = useTheme();
@@ -23,16 +21,20 @@ const WorldMap = ({ continentCount }) => {
   const initialData = [
     { name: "unknown", value: 2557234, percentage: 42.15 },
     { name: "Europe", value: 1289747, percentage: 21.26 },
-    { name: "Northern America", value: 1134091, percentage:  18.69 },
-    { name: "Asia", value: 600711, percentage: 9.90 },
-    { name: "Latin America and the Caribbean", value: 185393, percentage: 3.06 },
-    { name: "Oceania", value: 157943, percentage: 2.60 },
-    { name: "Africa", value: 131603, percentage: 2.17},
+    { name: "Northern America", value: 1134091, percentage: 18.69 },
+    { name: "Asia", value: 600711, percentage: 9.9 },
+    {
+      name: "Latin America and the Caribbean",
+      value: 185393,
+      percentage: 3.06,
+    },
+    { name: "Oceania", value: 157943, percentage: 2.6 },
+    { name: "Africa", value: 131603, percentage: 2.17 },
     { name: "Antarctica", value: 9626, percentage: 0.16 },
   ];
 
   function getPercentageByName(name) {
-    const region = initialData.find(region => region.name === name);
+    const region = initialData.find((region) => region.name === name);
     return region ? region.percentage : null;
   }
 
@@ -45,8 +47,9 @@ const WorldMap = ({ continentCount }) => {
       for (let key in continentCount) {
         if (continentCount.hasOwnProperty(key)) {
           const searchPercentage = (continentCount[key] / valueSum) * 100;
-          const expectedExposure = (searchPercentage / getPercentageByName(key)) * 100
-          console.log(continentCount[key])
+          const expectedExposure =
+            (searchPercentage / getPercentageByName(key)) * 100;
+
           // create a new object with the desired key names
           let newObj = {
             name: key,
@@ -56,12 +59,12 @@ const WorldMap = ({ continentCount }) => {
           };
           // append the new object to the array
           formattedMapData.push(newObj);
+          // setTimeout(() => formattedMapData.push(newObj), 1000)
         }
       }
       setMapPercentageData(formattedMapData);
     }
   }, [continentCount]);
-
 
   // Color Scale for maps
   const colorScale = scaleLinear()
@@ -75,7 +78,7 @@ const WorldMap = ({ continentCount }) => {
     // Get the data for the hovered-over geography
     const d = mapPercentageData.find((s) => s.name === CONTINENT);
     // Set the tooltip content to the name and percentage of the geography
-    
+
     setTooltipContent(`${CONTINENT}: ${d ? d.percentage : "N/A"}%`);
   };
 
