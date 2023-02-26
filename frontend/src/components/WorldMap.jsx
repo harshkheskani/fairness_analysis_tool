@@ -50,7 +50,7 @@ const WorldMap = ({ continentCount }) => {
           console.log(searchRatio)
           const fullDataSetRatio = getPercentageByName(key) / 100
           console.log(fullDataSetRatio)
-          const expectedExposure = Math.abs(searchRatio - fullDataSetRatio)*100
+          const expectedExposure = Math.abs(searchRatio - fullDataSetRatio) * 100
           console.log(expectedExposure)
 
           // create a new object with the desired key names
