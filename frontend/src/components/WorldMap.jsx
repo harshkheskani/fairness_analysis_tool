@@ -46,9 +46,12 @@ const WorldMap = ({ continentCount }) => {
       const valueSum = Object.values(continentCount).reduce((a, b) => a + b, 0);
       for (let key in continentCount) {
         if (continentCount.hasOwnProperty(key)) {
-          const searchPercentage = (continentCount[key] / valueSum) * 100;
-          const expectedExposure =
-            (searchPercentage / getPercentageByName(key)) * 100;
+          const searchRatio = (continentCount[key] / valueSum) ;
+          console.log(searchRatio)
+          const fullDataSetRatio = getPercentageByName(key) / 100
+          console.log(fullDataSetRatio)
+          const expectedExposure = Math.abs(searchRatio - fullDataSetRatio)*100
+          console.log(expectedExposure)
 
           // create a new object with the desired key names
           let newObj = {
