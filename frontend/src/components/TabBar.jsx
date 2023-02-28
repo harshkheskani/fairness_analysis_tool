@@ -33,6 +33,29 @@ const TabBar = ({ tabHeadings, searchResults }) => {
     }
   }
 
+  const geographicLocationsDict = {};
+
+  // create a location_to_documents dictionary for each key in searchResults
+  for (const heading of tabHeadings) {
+    const searchResultsForHeading = searchResults[heading];
+    const location_to_documents = {};
+  
+    for (const doc of searchResultsForHeading) {
+      const locations = doc.geographic_locations;
+  
+      for (const location of locations) {
+        if (location in location_to_documents) {
+          location_to_documents[location].push(doc);
+        } else {
+          location_to_documents[location] = [doc];
+        }
+      }
+    }
+  
+    geographicLocationsDict[heading] = location_to_documents;
+  }
+  console.log(geographicLocationsDict)  
+
   //Toggle Graph
 
   const [displayMode, setDisplayMode] = useState(true);
@@ -44,9 +67,7 @@ const TabBar = ({ tabHeadings, searchResults }) => {
   console.log(displayMode);
 
   return (
-    
     <Box sx={{ width: "100%", height: "100%", bgcolor: "background.paper" }}>
-      
       <Tabs value={value} onChange={handleChange} centered>
         {tabHeadings.map((heading, index) => (
           <Tab key={index} label={heading} />

@@ -22,7 +22,8 @@ const BarChart = ({ continentCount }) => {
 
   const [barChartData, setBarChartData] = useState(initialData);
  
- 
+
+
   function getPercentageByName(name) {
     const region = initialData.find((region) => region.name === name);
     return region ? region.percentage : null;
@@ -70,8 +71,8 @@ const BarChart = ({ continentCount }) => {
       animate={true}
       motionStiffness={90}
       motionDamping={15}
-      // height = {100 px}
-      // width = {100 px}
+      // height = {500}
+      // width = {500}
     />
   );
 };
