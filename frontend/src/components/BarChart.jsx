@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ResponsiveBar } from "@nivo/bar";
 
-const BarChart = ({ continentCount }) => {
+const BarChart = ({ continentCount, locations }) => {
   console.log(continentCount);
 
   // Full data set: country count

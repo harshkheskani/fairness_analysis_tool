@@ -13,10 +13,10 @@ import { feature } from "topojson-client";
 import Tooltip from "@mui/material/Tooltip";
 import continentsFile from "../data/merged_ocean_continents_geojson.json";
 
-const WorldMap = ({ continentCount }) => {
+const WorldMap = ({ continentCount, locations }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  console.log(locations)
   // Full data set: country count
   const initialData = [
     { name: "unknown", value: 2557234, percentage: 42.15 },

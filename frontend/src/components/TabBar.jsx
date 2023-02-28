@@ -54,7 +54,7 @@ const TabBar = ({ tabHeadings, searchResults }) => {
   
     geographicLocationsDict[heading] = location_to_documents;
   }
-  console.log(geographicLocationsDict)  
+
 
   //Toggle Graph
 
@@ -64,7 +64,7 @@ const TabBar = ({ tabHeadings, searchResults }) => {
     setDisplayMode(!displayMode);
   };
 
-  console.log(displayMode);
+
 
   return (
     <Box sx={{ width: "100%", height: "100%", bgcolor: "background.paper" }}>
@@ -84,9 +84,9 @@ const TabBar = ({ tabHeadings, searchResults }) => {
                 <ResultsTable results={searchResults[heading]} />
                 <BarChartIcon onClick={toggleDisplayMode}></BarChartIcon>
                 {displayMode ? (
-                  <WorldMap continentCount={continentCount[heading]} />
+                  <WorldMap continentCount={continentCount[heading]} locations={geographicLocationsDict[heading]} />
                 ) : (
-                  <BarChart continentCount={continentCount[heading]} />
+                  <BarChart continentCount={continentCount[heading]} locations={geographicLocationsDict[heading]}/>
                 )}
               </Box>
             )}
