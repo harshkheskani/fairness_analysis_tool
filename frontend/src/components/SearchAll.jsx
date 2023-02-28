@@ -164,23 +164,6 @@ const SearchAll = () => {
         )}
       </Box>
 
-      {/* {searchResults.length !== 0 && (
-        <Box sx={{ m: 2 }}>
-          <Typography variant="h4" color={colors.grey[200]}>
-            Search Results
-          </Typography>
-          <ResultsTable results={searchResults} />
-        </Box>
-      )} */}
-
-      <Box
-        gridColumn="span 10"
-        gridRow="span 2"
-        backgroundColor={colors.primary[400]}
-        overflow="auto"
-      >
-        {/* <WorldMap continentCount={allLocations} searchResults = {searchResults} /> */}
-      </Box>
     </Box>
   );
 };
