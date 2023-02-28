@@ -21,40 +21,40 @@ const BarChart = ({ continentCount }) => {
   ];
 
   const [barChartData, setBarChartData] = useState(initialData);
-
+ 
+ 
   function getPercentageByName(name) {
     const region = initialData.find((region) => region.name === name);
-    if (!region) {
-      return null;
+    return region ? region.percentage : null;
+  }
+
+  function updatingContinentCount () {
+    const formattedMapData = [];
+    const valueSum = Object.values(continentCount).reduce((a, b) => a + b, 0);
+    for (let key in continentCount) {
+      if (continentCount.hasOwnProperty(key)) {
+        const searchRatio = continentCount[key] / valueSum;
+        const fullDataSetRatio = getPercentageByName(key) / 100;
+        const expectedExposure =
+          Math.abs(searchRatio - fullDataSetRatio) * 100;
+        // create a new object with the desired key names
+        let newObj = {
+          name: key,
+          percentage: continentCount[key],
+          value: expectedExposure.toFixed(2),
+        };
+        // append the new object to the array
+        formattedMapData.push(newObj);
+      }
     }
-    // const value = continentCount[name] || 0;
-    // const percentage = (value / region.value) * 100;
-    // return parseFloat(percentage.toFixed(2));
+    setBarChartData(formattedMapData);
   }
 
   // updating map data
 
   useEffect(() => {
     if (Object.keys(continentCount || {}).length > 0) {
-      const formattedMapData = [];
-      const valueSum = Object.values(continentCount).reduce((a, b) => a + b, 0);
-      for (let key in continentCount) {
-        if (continentCount.hasOwnProperty(key)) {
-          const searchRatio = continentCount[key] / valueSum;
-          const fullDataSetRatio = getPercentageByName(key) / 100;
-          const expectedExposure =
-            Math.abs(searchRatio - fullDataSetRatio) * 100;
-          // create a new object with the desired key names
-          let newObj = {
-            name: key,
-            value: continentCount[key],
-            percentage: expectedExposure.toFixed(2),
-          };
-          // append the new object to the array
-          formattedMapData.push(newObj);
-        }
-      }
-      setBarChartData(formattedMapData);
+      updatingContinentCount()
     }
   }, [continentCount]);
 

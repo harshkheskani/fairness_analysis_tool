@@ -35,17 +35,18 @@ const TabBar = ({ tabHeadings, searchResults }) => {
 
   //Toggle Graph
 
-  const [displayMode, setDisplayMode] = useState("map");
+  const [displayMode, setDisplayMode] = useState(true);
+
   const toggleDisplayMode = () => {
-    console.log("Toggle display mode clicked");
-    if (displayMode === "map") {
-      setDisplayMode("chart");
-    } else {
-      setDisplayMode("map");
-    }
+    setDisplayMode(!displayMode);
   };
+
+  console.log(displayMode);
+
   return (
+    
     <Box sx={{ width: "100%", height: "100%", bgcolor: "background.paper" }}>
+      
       <Tabs value={value} onChange={handleChange} centered>
         {tabHeadings.map((heading, index) => (
           <Tab key={index} label={heading} />
@@ -58,21 +59,18 @@ const TabBar = ({ tabHeadings, searchResults }) => {
             style={{ display: value === index ? "block" : "none" }}
           >
             {searchResults[heading] && (
-              <Box sx={{  height: "800px", bgcolor: "background.paper" }}>
+              <Box sx={{ height: "800px", bgcolor: "background.paper" }}>
                 <ResultsTable results={searchResults[heading]} />
-                {displayMode === "map" ? (
+                <BarChartIcon onClick={toggleDisplayMode}></BarChartIcon>
+                {displayMode ? (
                   <WorldMap continentCount={continentCount[heading]} />
                 ) : (
                   <BarChart continentCount={continentCount[heading]} />
                 )}
-
               </Box>
             )}
           </Box>
         ))}
-      <BarChartIcon onClick={toggleDisplayMode}>
-        {displayMode === "map" ? "Switch to Bar Chart" : "Switch to World Map"}
-      </BarChartIcon>
     </Box>
   );
 };
