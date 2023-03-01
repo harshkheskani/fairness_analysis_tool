@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { ResponsiveBar } from "@nivo/bar";
 
+
 const BarChart = ({ continentCount, locations, searchResults }) => {
   // Full data set: country count
+
   const initialData = [
     { name: "unknown", value: 2557234, percentage: 42.15 },
     { name: "Europe", value: 1289747, percentage: 21.26 },
@@ -22,6 +24,7 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
   const [ranksPerContinent, setRanksPercontinent] = useState({});
   const [avgContinentRank, setAvgContinentRank] = useState({});
   const [rankRangesPerContinent, setRankRangesPerContinent] = useState({});
+
   useEffect(() => {
     const continentRanks = {};
     const continentAverages = {};
@@ -46,18 +49,7 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
   }, [locations]);
 
 
-  //List of scores for full dataset
-  const [skewScores, setSkewScores] = useState([])
-  useEffect(() => {
-    let scores = [];
-    if (searchResults && searchResults.length > 0) {
-      scores = searchResults.map((result) => result.score);
-    }
-    setSkewScores(scores)
-
-  }, [searchResults]);
-
-  //Calculate the Skew
+  // Calculate the Skew
   function skewness(data) {
     const n = data.length;
     const mean = data.reduce((acc, val) => acc + val, 0) / n;
@@ -67,8 +59,10 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
     const skewness =
       data.reduce((acc, val) => acc + Math.pow(val - mean, 3), 0) /
       (n * Math.pow(stdDev, 3));
-    return skewness;
+    setExpectedExposureSkew(skewness);
   }
+
+  const [expectedExposureSkew, setExpectedExposureSkew] = useState()
 
   const [barChartData, setBarChartData] = useState(initialData);
 
@@ -79,12 +73,14 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
 
   function updatingContinentCount() {
     const formattedMapData = [];
+    const listExpectedExposure = [];
     const valueSum = Object.values(continentCount).reduce((a, b) => a + b, 0);
     for (let key in continentCount) {
       if (continentCount.hasOwnProperty(key)) {
         const searchRatio = continentCount[key] / valueSum;
         const fullDataSetRatio = getPercentageByName(key) / 100;
         const expectedExposure = Math.abs(searchRatio - fullDataSetRatio) * 100;
+        listExpectedExposure.push(expectedExposure)
         // create a new object with the desired key names
         let newObj = {
           name: key,
@@ -96,6 +92,7 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
       }
     }
     setBarChartData(formattedMapData);
+    skewness(listExpectedExposure)  
   }
 
   // updating map data
@@ -118,8 +115,6 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
       animate={true}
       motionStiffness={90}
       motionDamping={15}
-      // height = {500}
-      // width = {500}
     />
   );
 };
