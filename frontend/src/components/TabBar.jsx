@@ -21,7 +21,6 @@ const TabBar = ({ tabHeadings, searchResults }) => {
 
   for (const [resultKey, resultValues] of Object.entries(searchResults)) {
     continentCount[resultKey] = {};
-
     for (const resultValue of resultValues) {
       for (const geographicLocation of resultValue.geographic_locations) {
         if (continentCount[resultKey][geographicLocation]) {
@@ -34,7 +33,6 @@ const TabBar = ({ tabHeadings, searchResults }) => {
   }
 
   const geographicLocationsDict = {};
-
   // create a location_to_documents dictionary for each key in searchResults
   for (const heading of tabHeadings) {
     const searchResultsForHeading = searchResults[heading];
@@ -55,16 +53,12 @@ const TabBar = ({ tabHeadings, searchResults }) => {
     geographicLocationsDict[heading] = location_to_documents;
   }
 
-
   //Toggle Graph
-
   const [displayMode, setDisplayMode] = useState(true);
 
   const toggleDisplayMode = () => {
     setDisplayMode(!displayMode);
   };
-
-
 
   return (
     <Box sx={{ width: "100%", height: "100%", bgcolor: "background.paper" }}>

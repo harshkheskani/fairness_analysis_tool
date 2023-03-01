@@ -16,7 +16,6 @@ import continentsFile from "../data/merged_ocean_continents_geojson.json";
 const WorldMap = ({ continentCount, locations }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  console.log(locations)
   // Full data set: country count
   const initialData = [
     { name: "unknown", value: 2557234, percentage: 42.15 },
@@ -37,6 +36,32 @@ const WorldMap = ({ continentCount, locations }) => {
     const region = initialData.find((region) => region.name === name);
     return region ? region.percentage : null;
   }
+  // Getting Ranks Per Continent
+  const [ranksPerContinent, setRanksPercontinent] = useState({});
+  const [avgContinentRank, setAvgContinentRank] = useState({});
+  const [rankRangesPerContinent, setRankRangesPerContinent] = useState({});
+  useEffect(() => {
+    const continentRanks = {};
+    const continentAverages = {};
+    const rankRanges = {};
+    if (locations && Object.keys(locations).length > 0) {
+      Object.entries(locations).forEach(([continent, data]) => {
+        continentRanks[continent] = data.map((obj) => obj.rank);
+        const ranks = data.map((obj) => obj.rank);
+        if (ranks.length > 0) {
+          const sum = ranks.reduce((total, rank) => total + rank);
+          const average = sum / ranks.length;
+          continentAverages[continent] = average;
+          const low = Math.min(...ranks);
+          const high = Math.max(...ranks);
+          rankRanges[continent] = { low, high };
+        }
+      });
+      setRanksPercontinent(continentRanks);
+      setAvgContinentRank(continentAverages);
+      setRankRangesPerContinent(rankRanges);
+    }
+  }, [locations]);
 
   // updating map data
   const [mapPercentageData, setMapPercentageData] = useState(initialData);

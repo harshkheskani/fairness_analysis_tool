@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { ResponsiveBar } from "@nivo/bar";
 
 const BarChart = ({ continentCount, locations }) => {
-  console.log(continentCount);
 
   // Full data set: country count
   const initialData = [
@@ -20,10 +19,48 @@ const BarChart = ({ continentCount, locations }) => {
     { name: "Antarctica", value: 9626, percentage: 0.16 },
   ];
 
+    // Getting Ranks Per Continent
+    const [ranksPerContinent, setRanksPercontinent] = useState({});
+    const [avgContinentRank, setAvgContinentRank] = useState({});
+    const [rankRangesPerContinent, setRankRangesPerContinent] = useState({});
+    useEffect(() => {
+      const continentRanks = {};
+      const continentAverages = {};
+      const rankRanges = {};
+      if (locations && Object.keys(locations).length > 0) {
+        Object.entries(locations).forEach(([continent, data]) => {
+          continentRanks[continent] = data.map((obj) => obj.rank);
+          const ranks = data.map((obj) => obj.rank);
+          if (ranks.length > 0) {
+            const sum = ranks.reduce((total, rank) => total + rank);
+            const average = sum / ranks.length;
+            continentAverages[continent] = average;
+            const low = Math.min(...ranks);
+            const high = Math.max(...ranks);
+            rankRanges[continent] = { low, high };
+          }
+        });
+        setRanksPercontinent(continentRanks);
+        setAvgContinentRank(continentAverages);
+        setRankRangesPerContinent(rankRanges);
+      }
+    }, [locations]);
+  
+
+  //Calculate the Skew
+  function skewness(data) {
+    const n = data.length;
+    const mean = data.reduce((acc, val) => acc + val, 0) / n;
+    const variance = data.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / n;
+    const stdDev = Math.sqrt(variance);
+    const skewness = data.reduce((acc, val) => acc + Math.pow(val - mean, 3), 0) / (n * Math.pow(stdDev, 3));
+    return skewness;
+  }
+  
+
+  
   const [barChartData, setBarChartData] = useState(initialData);
  
-
-
   function getPercentageByName(name) {
     const region = initialData.find((region) => region.name === name);
     return region ? region.percentage : null;
