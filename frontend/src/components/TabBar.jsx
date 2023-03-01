@@ -32,6 +32,7 @@ const TabBar = ({ tabHeadings, searchResults }) => {
     }
   }
 
+
   const geographicLocationsDict = {};
   // create a location_to_documents dictionary for each key in searchResults
   for (const heading of tabHeadings) {
@@ -80,7 +81,7 @@ const TabBar = ({ tabHeadings, searchResults }) => {
                 {displayMode ? (
                   <WorldMap continentCount={continentCount[heading]} locations={geographicLocationsDict[heading]} />
                 ) : (
-                  <BarChart continentCount={continentCount[heading]} locations={geographicLocationsDict[heading]}/>
+                  <BarChart continentCount={continentCount[heading]} searchResults={searchResults[heading]} locations={geographicLocationsDict[heading]}/>
                 )}
               </Box>
             )}

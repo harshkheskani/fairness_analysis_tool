@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ResponsiveBar } from "@nivo/bar";
 
-const BarChart = ({ continentCount, locations }) => {
-
+const BarChart = ({ continentCount, locations, searchResults }) => {
   // Full data set: country count
   const initialData = [
     { name: "unknown", value: 2557234, percentage: 42.15 },
@@ -19,62 +18,73 @@ const BarChart = ({ continentCount, locations }) => {
     { name: "Antarctica", value: 9626, percentage: 0.16 },
   ];
 
-    // Getting Ranks Per Continent
-    const [ranksPerContinent, setRanksPercontinent] = useState({});
-    const [avgContinentRank, setAvgContinentRank] = useState({});
-    const [rankRangesPerContinent, setRankRangesPerContinent] = useState({});
-    useEffect(() => {
-      const continentRanks = {};
-      const continentAverages = {};
-      const rankRanges = {};
-      if (locations && Object.keys(locations).length > 0) {
-        Object.entries(locations).forEach(([continent, data]) => {
-          continentRanks[continent] = data.map((obj) => obj.rank);
-          const ranks = data.map((obj) => obj.rank);
-          if (ranks.length > 0) {
-            const sum = ranks.reduce((total, rank) => total + rank);
-            const average = sum / ranks.length;
-            continentAverages[continent] = average;
-            const low = Math.min(...ranks);
-            const high = Math.max(...ranks);
-            rankRanges[continent] = { low, high };
-          }
-        });
-        setRanksPercontinent(continentRanks);
-        setAvgContinentRank(continentAverages);
-        setRankRangesPerContinent(rankRanges);
-      }
-    }, [locations]);
-  
+  // Getting Ranks Per Continent
+  const [ranksPerContinent, setRanksPercontinent] = useState({});
+  const [avgContinentRank, setAvgContinentRank] = useState({});
+  const [rankRangesPerContinent, setRankRangesPerContinent] = useState({});
+  useEffect(() => {
+    const continentRanks = {};
+    const continentAverages = {};
+    const rankRanges = {};
+    if (locations && Object.keys(locations).length > 0) {
+      Object.entries(locations).forEach(([continent, data]) => {
+        continentRanks[continent] = data.map((obj) => obj.rank);
+        const ranks = data.map((obj) => obj.rank);
+        if (ranks.length > 0) {
+          const sum = ranks.reduce((total, rank) => total + rank);
+          const average = sum / ranks.length;
+          continentAverages[continent] = average;
+          const low = Math.min(...ranks);
+          const high = Math.max(...ranks);
+          rankRanges[continent] = { low, high };
+        }
+      });
+      setRanksPercontinent(continentRanks);
+      setAvgContinentRank(continentAverages);
+      setRankRangesPerContinent(rankRanges);
+    }
+  }, [locations]);
+
+
+  //List of scores for full dataset
+  const [skewScores, setSkewScores] = useState([])
+  useEffect(() => {
+    let scores = [];
+    if (searchResults && searchResults.length > 0) {
+      scores = searchResults.map((result) => result.score);
+    }
+    setSkewScores(scores)
+
+  }, [searchResults]);
 
   //Calculate the Skew
   function skewness(data) {
     const n = data.length;
     const mean = data.reduce((acc, val) => acc + val, 0) / n;
-    const variance = data.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / n;
+    const variance =
+      data.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / n;
     const stdDev = Math.sqrt(variance);
-    const skewness = data.reduce((acc, val) => acc + Math.pow(val - mean, 3), 0) / (n * Math.pow(stdDev, 3));
+    const skewness =
+      data.reduce((acc, val) => acc + Math.pow(val - mean, 3), 0) /
+      (n * Math.pow(stdDev, 3));
     return skewness;
   }
-  
 
-  
   const [barChartData, setBarChartData] = useState(initialData);
- 
+
   function getPercentageByName(name) {
     const region = initialData.find((region) => region.name === name);
     return region ? region.percentage : null;
   }
 
-  function updatingContinentCount () {
+  function updatingContinentCount() {
     const formattedMapData = [];
     const valueSum = Object.values(continentCount).reduce((a, b) => a + b, 0);
     for (let key in continentCount) {
       if (continentCount.hasOwnProperty(key)) {
         const searchRatio = continentCount[key] / valueSum;
         const fullDataSetRatio = getPercentageByName(key) / 100;
-        const expectedExposure =
-          Math.abs(searchRatio - fullDataSetRatio) * 100;
+        const expectedExposure = Math.abs(searchRatio - fullDataSetRatio) * 100;
         // create a new object with the desired key names
         let newObj = {
           name: key,
@@ -92,7 +102,7 @@ const BarChart = ({ continentCount, locations }) => {
 
   useEffect(() => {
     if (Object.keys(continentCount || {}).length > 0) {
-      updatingContinentCount()
+      updatingContinentCount();
     }
   }, [continentCount]);
 
