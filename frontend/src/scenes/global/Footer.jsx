@@ -1,16 +1,25 @@
-import React from 'react'
-import { AppBar, Toolbar, Typography } from "@mui/material";
-
+import React from "react";
+import { AppBar, Toolbar, Typography, useTheme } from "@mui/material";
+import { tokens } from "../../theme";
+import { Box } from "@mui/system";
 const Footer = () => {
-    return (
-      <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
-        <Toolbar>
-          <Typography variant="body1" color="inherit">
-            Copyright © 2023 My Website
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    );
-  };
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   
-  export default Footer;
+  return (
+    <AppBar position="fixed" sx={{ top: "auto", bottom: 0, backgroundColor: colors.primary[900]  }}>
+      <Toolbar>
+        <Box>
+        <Typography variant="body1" color="inherit">
+          2482581k - L4 Final Project
+        </Typography>
+        </Box>
+        <Box>
+          
+        </Box>
+      </Toolbar>
+    </AppBar>
+  );
+};
+
+export default Footer;

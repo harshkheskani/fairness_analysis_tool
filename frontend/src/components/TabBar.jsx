@@ -9,8 +9,14 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import PublicIcon from "@mui/icons-material/Public";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import BarChart from "./BarChart";
+import { tokens } from "../theme";
+import { useTheme } from "@mui/material";
 
 const TabBar = ({ tabHeadings, searchResults }) => {
+
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -63,9 +69,9 @@ const TabBar = ({ tabHeadings, searchResults }) => {
 
   return (
     <Box sx={{ width: "100%", height: "100%", bgcolor: "background.paper" }}>
-      <Tabs value={value} onChange={handleChange} centered>
+      <Tabs value={value} onChange={handleChange} centered sx = {{backgroundColor: colors.primary[500]}}>
         {tabHeadings.map((heading, index) => (
-          <Tab key={index} label={heading} />
+          <Tab key={index} label={heading} sx={{ color: 'white' }} />
         ))}
       </Tabs>
       {searchResults &&

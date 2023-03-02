@@ -100,6 +100,7 @@ const WorldMap = ({ continentCount, locations }) => {
     const { CONTINENT } = geo.properties;
     // Get the data for the hovered-over geography
     const d = mapPercentageData.find((s) => s.name === CONTINENT);
+    // const avgRank = avgContinentRank.find((s) => s.name === CONTINENT)
     // Set the tooltip content to the name and percentage of the geography
 
     setTooltipContent(`${CONTINENT}: ${d ? d.percentage : "N/A"}%`);

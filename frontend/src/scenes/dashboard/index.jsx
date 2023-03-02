@@ -1,47 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import ArticleIcon from "@mui/icons-material/Article";
 import PublicIcon from "@mui/icons-material/Public";
-import Header from "../../components/Header";
-import LineChart from "../../components/LineChart";
+
 import StatBox from "../../components/StatBox";
 import TopicIcon from "@mui/icons-material/Topic";
 import SearchAll from "../../components/SearchAll";
-import axios from "axios";
 
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [collectionStats, setCollectionStats] = useState([]);
-
-  useEffect(() => {
-    // The code inside this block will run as soon as the component is rendered 
-    const getIndexStats = async () => {
-      try {
-        const response = await axios({
-          method: "GET",
-          url: "http://127.0.0.1:8000/api/indexStats/",
-          responseType: "json",
-        });
-        //console.log(response);
-        const initialData = JSON.parse(response.data);
-        setCollectionStats(initialData);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getIndexStats();
-    //console.log("The component has been rendered!");
-  }, []);
 
   return (
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="Dataset #1" subtitle="Welcome to your dashboard" />
+        <Box>
+          <Typography variant="h2" component="h1">
+            TREC21
+          </Typography>
+          <Typography variant="h4">Welcome to your Dashboard</Typography>
+        </Box>
         <Box gridColumn="span 8" backgroundColor={colors.primary[400]}></Box>
         <Box>
           <Button
@@ -143,13 +125,11 @@ const Dashboard = () => {
             }
           />
         </Box>
-        {/* ROW 2 */}
       </Box>
       {/* Search */}
       <Box>
         <SearchAll />
       </Box>
-
 
       {/* ROW 3 */}
 
@@ -185,9 +165,7 @@ const Dashboard = () => {
             </IconButton>
           </Box>
         </Box>
-        <Box height="250px" m="-20px 0 0 0">
-          <LineChart isDashboard={true} />
-        </Box>
+
       </Box>
     </Box>
   );

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { tokens } from "../theme";
 import SearchIcon from "@mui/icons-material/Search";
 import WorldMap from "./WorldMap";
-import ResultsTable from "./ResultsTable";
 import TabBar from "./TabBar";
 import {
   Box,
@@ -15,9 +14,12 @@ import {
   MenuItem,
   Select,
   Chip,
+  CircularProgress,
+  TextField
 } from "@mui/material";
 import axios from "axios";
-import TextField from "@mui/material/TextField";
+
+
 
 const SearchAll = () => {
   const theme = useTheme();
@@ -75,19 +77,33 @@ const SearchAll = () => {
       typeof value === "string" ? value.split(",") : value
     );
   };
+
+  //Loading
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = () => {
+    setLoading(true);
+    searchQuery({
+      searchTerm: searchInput,
+      retrievalModels: chosenRetrievalModel,
+    }).then(() => {
+      setLoading(false);
+    });
+  };
+
   return (
-    <Box>
+    <Box sx={{ m: 2 }}>
       <Box
         display="flex"
-        backgroundColor={colors.primary[400]}
-        borderRadius="3px"
+        backgroundColor="transparent"
         sx={{
           display: "flex",
           alignItems: "center",
+          justifyContent: "center", // add this line
           "& > :not(style)": { m: 2 },
         }}
       >
-        <FormControl>
+        <FormControl sx={{ width: 275 }}>
           <TextField
             id="demo-helper-text-aligned-no-helper"
             label="Search"
@@ -99,7 +115,7 @@ const SearchAll = () => {
             onChange={(e) => setSearchInput(e.target.value)}
           />
         </FormControl>
-        <FormControl sx={{ m: 1, width: 300 }}>
+        <FormControl sx={{ width: 200 }}>
           <InputLabel id="demo-multiple-chip-label">Retrieval Model</InputLabel>
           <Select
             labelId="demo-multiple-chip-label"
@@ -107,6 +123,7 @@ const SearchAll = () => {
             multiple
             value={chosenRetrievalModel}
             onChange={handleChange}
+            variant="standard"
             input={
               <OutlinedInput
                 id="select-multiple-chip"
@@ -133,26 +150,18 @@ const SearchAll = () => {
             ))}
           </Select>
         </FormControl>
-
-        <IconButton
-          type="button"
-          sx={{ p: 1 }}
-          onClick={() => {
-            searchQuery({
-              searchTerm: searchInput,
-              retrievalModels: chosenRetrievalModel,
-            });
-          }}
-        >
-          <SearchIcon />
+        <IconButton type="button" sx={{ p: 1 }} onClick={handleClick}>
+          {loading ? <CircularProgress size={24} sx={{color:colors.redAccent[500]}} /> : <SearchIcon />}
         </IconButton>
       </Box>
 
       <Box
         gridColumn="span 10"
         gridRow="span 2"
-        backgroundColor={colors.primary[400]}
+        backgroundColor="transparent"
         overflow="auto"
+        marginTop="-180px"
+        sx ={{m:2}}
       >
         {Object.keys(searchResults).length > 0 ? (
           <TabBar
@@ -160,10 +169,11 @@ const SearchAll = () => {
             searchResults={searchResults}
           />
         ) : (
-          <WorldMap />
+          <Box>
+            <WorldMap />
+          </Box>
         )}
       </Box>
-
     </Box>
   );
 };

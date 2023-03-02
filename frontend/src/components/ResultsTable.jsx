@@ -57,6 +57,7 @@ const ResultsTable = ({ results }) => {
   // table data 
   const columns = [
     { id: "qid", label: "ID", minWidth: 50, align: "right" },
+    { id: "rank", label: "Rank", minWidth: 50, align: "right" },
     { id: "docid", label: "Document\u00a0ID", minWidth: 75, align: "right" },
     {
       id: "title",
@@ -65,9 +66,8 @@ const ResultsTable = ({ results }) => {
       align: "right",
     },
     { id: "docno", label: "Document\u00a0No", minWidth: 50, align: "right" },
-    { id: "rank", label: "Rank", minWidth: 50, align: "right" },
     { id: "score", label: "Score", minWidth: 170, align: "right" },
-    { id: "query", label: "Query", minWidth: 50, align: "right" },
+
     {
       id: "geographic_locations",
       label: "Location",
