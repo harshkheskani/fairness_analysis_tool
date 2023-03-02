@@ -15,11 +15,14 @@ import {
   Select,
   Chip,
   CircularProgress,
-  TextField
+  TextField,
 } from "@mui/material";
 import axios from "axios";
-
-
+import BarChart from "./BarChart";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import PublicIcon from "@mui/icons-material/Public";
+import BarChartIcon from "@mui/icons-material/BarChart";
 
 const SearchAll = () => {
   const theme = useTheme();
@@ -91,6 +94,14 @@ const SearchAll = () => {
     });
   };
 
+  //Bar Chart
+  //Toggle Graph
+  const [displayMode, setDisplayMode] = useState(true);
+
+  const toggleDisplayMode = () => {
+    setDisplayMode(!displayMode);
+  };
+
   return (
     <Box sx={{ m: 2 }}>
       <Box
@@ -151,7 +162,11 @@ const SearchAll = () => {
           </Select>
         </FormControl>
         <IconButton type="button" sx={{ p: 1 }} onClick={handleClick}>
-          {loading ? <CircularProgress size={24} sx={{color:colors.redAccent[500]}} /> : <SearchIcon />}
+          {loading ? (
+            <CircularProgress size={24} sx={{ color: colors.redAccent[500] }} />
+          ) : (
+            <SearchIcon />
+          )}
         </IconButton>
       </Box>
 
@@ -161,7 +176,7 @@ const SearchAll = () => {
         backgroundColor="transparent"
         overflow="auto"
         marginTop="-180px"
-        sx ={{m:2}}
+        sx={{ m: 2 }}
       >
         {Object.keys(searchResults).length > 0 ? (
           <TabBar
@@ -170,7 +185,35 @@ const SearchAll = () => {
           />
         ) : (
           <Box>
-            <WorldMap />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "10px",
+              }}
+            >
+              <ToggleButtonGroup
+                value={displayMode}
+                exclusive
+                onChange={toggleDisplayMode}
+                aria-label="text alignment"
+              >
+                <ToggleButton value="left" aria-label="left aligned">
+                  <PublicIcon onClick={toggleDisplayMode} />
+                </ToggleButton>
+                <ToggleButton value="center" aria-label="centered">
+                  <BarChartIcon onClick={toggleDisplayMode} />
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
+            <Box
+              sx={{
+                marginTop: "-100px",
+              }}
+            >
+              {displayMode ? <WorldMap /> : <BarChart />}
+            </Box>
           </Box>
         )}
       </Box>

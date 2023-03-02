@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { scaleLinear } from "d3-scale";
 import { tokens } from "../theme";
-import { useTheme } from "@mui/material";
+import { useTheme, Box } from "@mui/material";
 import {
   ComposableMap,
   Geographies,
@@ -12,6 +12,7 @@ import {
 import { feature } from "topojson-client";
 import Tooltip from "@mui/material/Tooltip";
 import continentsFile from "../data/merged_ocean_continents_geojson.json";
+import WorldMapLegend from "./WorldMapLegend";
 
 const WorldMap = ({ continentCount, locations }) => {
   const theme = useTheme();
@@ -112,51 +113,53 @@ const WorldMap = ({ continentCount, locations }) => {
   };
 
   return (
-    <ComposableMap
-      projectionConfig={{
-        rotate: [-10, 0, 0],
-        scale: 147,
-      }}
-    >
-      <Sphere stroke="#E4E5E6" strokeWidth={0.5} />
-      <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
-      <Geographies geography={continentsFile}>
-        {({ geographies }) =>
-          geographies.map((geo) => {
-            const d = mapPercentageData.find(
-              (s) => s.name === geo.properties.CONTINENT
-            );
-            return (
-              <Tooltip
-                title={`${geo.properties.CONTINENT}: ${
-                  d ? d.percentage : "N/A"
-                }%`}
-                key={geo.properties.CONTINENT}
-              >
-                <Geography
-                  geography={geo}
+    <Box>
+      <ComposableMap
+        projectionConfig={{
+          rotate: [-10, 0, 0],
+          scale: 147,
+        }}
+      >
+        <Sphere stroke="#E4E5E6" strokeWidth={0.5} />
+        <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
+        <Geographies geography={continentsFile}>
+          {({ geographies }) =>
+            geographies.map((geo) => {
+              const d = mapPercentageData.find(
+                (s) => s.name === geo.properties.CONTINENT
+              );
+              return (
+                <Tooltip
+                  title={`${geo.properties.CONTINENT}: ${
+                    d ? d.percentage : "N/A"
+                  }%`}
                   key={geo.properties.CONTINENT}
-                  fill={d ? colorScale(d["percentage"]) : "#F5F4F6"}
-                  stroke="#D6D6DA"
-                  // Pass a lambda function to the `onMouseEnter` event to pass the `geo` object to `handleMouseEnter`
-                  onMouseEnter={(event) => handleMouseEnter(event, geo)}
-                  onMouseLeave={handleMouseLeave}
-                  style={{
-                    default: {
-                      outline: "none",
-                    },
-                    hover: {
-                      fill: "#F53",
-                      outline: "none",
-                    },
-                  }}
-                />
-              </Tooltip>
-            );
-          })
-        }
-      </Geographies>
-    </ComposableMap>
+                >
+                  <Geography
+                    geography={geo}
+                    key={geo.properties.CONTINENT}
+                    fill={d ? colorScale(d["percentage"]) : "#F5F4F6"}
+                    stroke="#D6D6DA"
+                    // Pass a lambda function to the `onMouseEnter` event to pass the `geo` object to `handleMouseEnter`
+                    onMouseEnter={(event) => handleMouseEnter(event, geo)}
+                    onMouseLeave={handleMouseLeave}
+                    style={{
+                      default: {
+                        outline: "none",
+                      },
+                      hover: {
+                        fill: "#F53",
+                        outline: "none",
+                      },
+                    }}
+                  />
+                </Tooltip>
+              );
+            })
+          }
+        </Geographies>
+      </ComposableMap>
+    </Box>
   );
 };
 

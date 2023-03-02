@@ -65,6 +65,7 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
   const [expectedExposureSkew, setExpectedExposureSkew] = useState()
 
   const [barChartData, setBarChartData] = useState(initialData);
+  console.log(barChartData)
 
   function getPercentageByName(name) {
     const region = initialData.find((region) => region.name === name);
