@@ -12,7 +12,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import PublicIcon from "@mui/icons-material/Public";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import { margin } from "@mui/system";
+
 
 const TabBar = ({ tabHeadings, searchResults }) => {
   const theme = useTheme();
@@ -90,7 +90,7 @@ const TabBar = ({ tabHeadings, searchResults }) => {
             }}
           >
             {searchResults[heading] && (
-              <Box sx={{ height: "800px", bgcolor: "background.paper" }}>
+              <Box sx={{ height: "1500px", bgcolor: "background.paper" }}>
                 <ResultsTable results={searchResults[heading]} sx = {{m:2}} />
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: "10px"}}>
                 <ToggleButtonGroup

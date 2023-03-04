@@ -209,7 +209,7 @@ const SearchAll = () => {
             </Box>
             <Box
               sx={{
-                marginTop: "-100px",
+                marginTop: "-125px",
               }}
             >
               {displayMode ? <WorldMap /> : <BarChart />}

@@ -9,7 +9,7 @@ import RenderDocText from "./components/RenderDocText";
 
 function App() {
   const [theme, colorMode] = useMode();
-  
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
