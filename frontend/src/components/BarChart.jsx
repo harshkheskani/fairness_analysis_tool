@@ -47,11 +47,12 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
   const [ranksPerContinent, setRanksPercontinent] = useState([]);
   const [avgContinentRank, setAvgContinentRank] = useState([]);
   const [rankRangesPerContinent, setRankRangesPerContinent] = useState([]);
-
+  const [lenContinent, setLenContinent] = useState([]);
   useEffect(() => {
     const continentRanks = [];
     const continentAverages = [];
     const rankRanges = [];
+    const numDocs = [];
     if (locations && Object.keys(locations).length > 0) {
       Object.entries(locations).forEach(([continent, data]) => {
         const ranks = data.map((obj) => ({ name: obj.name, value: obj.rank }));
@@ -67,13 +68,15 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
           rankRanges.push({ name: continent, low: low, high: high });
         }
         continentRanks.push({ name: continent, value: ranks });
+        numDocs.push({ name: continent, value: ranks.length });
       });
       setRanksPercontinent(continentRanks);
       setAvgContinentRank(continentAverages);
       setRankRangesPerContinent(rankRanges);
+      setLenContinent(numDocs);
     }
   }, [locations]);
-
+  console.log(lenContinent);
   // Calculate the Skew
   function skewness(data) {
     const values = data.map((item) => item.value); // extract the "value" property from each dictionary
@@ -88,7 +91,7 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
 
     const skewData = skewness.toString(); // convert skewness to a string
 
-    return skewData
+    return skewData;
   }
 
   const [barChartData, setBarChartData] = useState(initialDataPerCent);
@@ -144,7 +147,9 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
     "Search Result Distribution"
   );
 
-  const [skewGraphData, setSkewGraphData] = useState(skewness(initialDataPerCent));
+  const [skewGraphData, setSkewGraphData] = useState(
+    skewness(initialDataPerCent)
+  );
 
   return (
     <Box>
@@ -177,7 +182,7 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
                   setBarChartData(searchDataDistribution);
                   setYAxisLabel("Distribution (%)");
                   setBarGraphTitle("Distribution of Search Results");
-                  setSkewGraphData(skewness(searchDataDistribution))
+                  setSkewGraphData(skewness(searchDataDistribution));
                 }}
               >
                 <Typography>Distribution of Search</Typography>
@@ -206,20 +211,32 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
               >
                 <Typography>Average Rank</Typography>
               </ToggleButton>
+              <ToggleButton
+                value="left"
+                aria-label="left aligned"
+                onClick={() => {
+                  setBarChartData(lenContinent);
+                  setYAxisLabel("Number of Documents");
+                  setBarGraphTitle("Number of Documents per Continent");
+                  setSkewGraphData(skewness(avgContinentRank));
+                }}
+              >
+                <Typography>Number of Documents</Typography>
+              </ToggleButton>
             </ToggleButtonGroup>
           </Box>
-          </React.Fragment>
+        </React.Fragment>
       )}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: "10px",
-            }}
-          >
-            <Typography variant="h5">{`Skew: ${skewGraphData}`}</Typography>
-          </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "10px",
+        }}
+      >
+        <Typography variant="h5">{`Skew: ${skewGraphData}`}</Typography>
+      </Box>
 
       <Box sx={{ height: "800px" }}>
         <ResponsiveBar
