@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { scaleLinear } from "d3-scale";
 import { tokens } from "../theme";
-import { useTheme, Box } from "@mui/material";
+import { useTheme, Box, Typography } from "@mui/material";
 import {
   ComposableMap,
   Geographies,
@@ -9,10 +9,10 @@ import {
   Sphere,
   Graticule,
 } from "react-simple-maps";
-import { feature } from "topojson-client";
-import Tooltip from "@mui/material/Tooltip";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import continentsFile from "../data/merged_ocean_continents_geojson.json";
 import WorldMapLegend from "./WorldMapLegend";
+import { styled } from "@mui/material/styles";
 
 const WorldMap = ({ continentCount, locations }) => {
   const theme = useTheme();
@@ -33,34 +33,43 @@ const WorldMap = ({ continentCount, locations }) => {
     { name: "Antarctica", value: 9626, percentage: 0.16 },
   ];
 
+  const [graphTitle, setGraph] = useState("Distribution of Dataset");
+
   function getPercentageByName(name) {
     const region = initialData.find((region) => region.name === name);
     return region ? region.percentage : null;
   }
   // Getting Ranks Per Continent
-  const [ranksPerContinent, setRanksPercontinent] = useState({});
-  const [avgContinentRank, setAvgContinentRank] = useState({});
-  const [rankRangesPerContinent, setRankRangesPerContinent] = useState({});
+  const [ranksPerContinent, setRanksPercontinent] = useState([]);
+  const [avgContinentRank, setAvgContinentRank] = useState([]);
+  const [rankRangesPerContinent, setRankRangesPerContinent] = useState([]);
+  const [lenContinent, setLenContinent] = useState([]);
   useEffect(() => {
-    const continentRanks = {};
-    const continentAverages = {};
-    const rankRanges = {};
+    const continentRanks = [];
+    const continentAverages = [];
+    const rankRanges = [];
+    const numDocs = [];
     if (locations && Object.keys(locations).length > 0) {
       Object.entries(locations).forEach(([continent, data]) => {
-        continentRanks[continent] = data.map((obj) => obj.rank);
-        const ranks = data.map((obj) => obj.rank);
+        const ranks = data.map((obj) => ({ name: obj.name, value: obj.rank }));
         if (ranks.length > 0) {
-          const sum = ranks.reduce((total, rank) => total + rank);
+          const sum = ranks.reduce((total, rank) => total + rank.value, 0);
           const average = sum / ranks.length;
-          continentAverages[continent] = average;
-          const low = Math.min(...ranks);
-          const high = Math.max(...ranks);
-          rankRanges[continent] = { low, high };
+          continentAverages.push({
+            name: continent,
+            value: Number(average.toFixed(2)),
+          });
+          const low = Math.min(...ranks.map((rank) => rank.value));
+          const high = Math.max(...ranks.map((rank) => rank.value));
+          rankRanges.push({ name: continent, low: low, high: high });
         }
+        continentRanks.push({ name: continent, value: ranks });
+        numDocs.push({ name: continent, value: ranks.length });
       });
       setRanksPercontinent(continentRanks);
       setAvgContinentRank(continentAverages);
       setRankRangesPerContinent(rankRanges);
+      setLenContinent(numDocs);
     }
   }, [locations]);
 
@@ -111,9 +120,32 @@ const WorldMap = ({ continentCount, locations }) => {
   const handleMouseLeave = () => {
     setTooltipContent("");
   };
+  const HtmlTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: "#e0e0e0",
+      color: "rgba(0, 0, 0, 0.87)",
+      maxWidth: 220,
+      fontSize: theme.typography.pxToRem(12),
+      border: "1px solid #dadde9",
+    },
+  }));
 
   return (
     <Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "10px",
+          marginBottom: "-150px"
+        }}
+      >
+        <Typography variant="h2">{graphTitle}</Typography>
+      </Box>
+      <Box sx ={{flex:1}}>
       <ComposableMap
         projectionConfig={{
           rotate: [-10, 0, 0],
@@ -122,47 +154,124 @@ const WorldMap = ({ continentCount, locations }) => {
       >
         <Sphere stroke="#E4E5E6" strokeWidth={0.5} />
         <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
-        <Geographies geography={continentsFile}>
-          {({ geographies }) =>
-            geographies.map((geo) => {
-              const d = mapPercentageData.find(
-                (s) => s.name === geo.properties.CONTINENT
-              );
-              return (
-                <Tooltip
-                  title={`${geo.properties.CONTINENT}: ${
-                    d ? d.percentage : "N/A"
-                  }%`}
-                  key={geo.properties.CONTINENT}
-                >
-                  <Geography
-                    geography={geo}
+        {locations && continentCount ? (
+          <Geographies geography={continentsFile}>
+            {({ geographies }) =>
+              geographies.map((geo) => {
+                const d = mapPercentageData.find(
+                  (s) => s.name === geo.properties.CONTINENT
+                );
+                const avg = avgContinentRank.find(
+                  (s) => s.name === geo.properties.CONTINENT
+                );
+                const ranks = rankRangesPerContinent.find(
+                  (s) => s.name === geo.properties.CONTINENT
+                );
+                return (
+                  <HtmlTooltip
+                    title={
+                      <React.Fragment>
+                        <Typography>
+                          <em>
+                            <b>{geo.properties.CONTINENT}</b>
+                          </em>
+                        </Typography>
+                        <Typography>
+                          <b>Expected Exposure: </b>
+                          {d ? d.percentage : "N/A"}%
+                        </Typography>
+                        <Typography>
+                          <b>Average Rank: </b>
+                          {avg ? avg.value: "N/A"}
+                        </Typography>
+                        <Typography>
+                          <b>Highest Rank: </b>
+                          {ranks ? ranks.high : "N/A"}
+                        </Typography>
+                        <Typography>
+                          <b>Lowest Rank: </b>
+                          {ranks ? ranks.low :"N/A"}
+                        </Typography>
+                      </React.Fragment>
+                    }
                     key={geo.properties.CONTINENT}
-                    fill={d ? colorScale(d["percentage"]) : "#F5F4F6"}
-                    stroke="#D6D6DA"
-                    // Pass a lambda function to the `onMouseEnter` event to pass the `geo` object to `handleMouseEnter`
-                    onMouseEnter={(event) => handleMouseEnter(event, geo)}
-                    onMouseLeave={handleMouseLeave}
-                    style={{
-                      default: {
-                        outline: "none",
-                      },
-                      hover: {
-                        fill: "#2e7c67",
-                        outline: "none",
-                      },
-                    }}
-                  />
-                </Tooltip>
-              );
-            })
-          }
-        </Geographies>
-
+                  >
+                    <Geography
+                      geography={geo}
+                      key={geo.properties.CONTINENT}
+                      fill={d ? colorScale(d["percentage"]) : "#F5F4F6"}
+                      stroke="#D6D6DA"
+                      // Pass a lambda function to the `onMouseEnter` event to pass the `geo` object to `handleMouseEnter`
+                      onMouseEnter={(event) => handleMouseEnter(event, geo)}
+                      onMouseLeave={handleMouseLeave}
+                      style={{
+                        default: {
+                          outline: "none",
+                        },
+                        hover: {
+                          fill: "#2e7c67",
+                          outline: "none",
+                        },
+                      }}
+                    />
+                  </HtmlTooltip>
+                );
+              })
+            }
+          </Geographies>
+        ) : (
+          <Geographies geography={continentsFile}>
+            {({ geographies }) =>
+              geographies.map((geo) => {
+                const d = mapPercentageData.find(
+                  (s) => s.name === geo.properties.CONTINENT
+                );
+                return (
+                  <HtmlTooltip
+                    title={
+                      <React.Fragment>
+                        <Typography>
+                          <em>
+                            <b>{geo.properties.CONTINENT}</b>
+                          </em>{" "}
+                        </Typography>
+                        <Typography>
+                          <b>Actual exposure: </b>
+                          {d ? d.percentage : "N/A"}%
+                        </Typography>
+                      </React.Fragment>
+                    }
+                    key={geo.properties.CONTINENT}
+                  >
+                    <Geography
+                      geography={geo}
+                      key={geo.properties.CONTINENT}
+                      fill={d ? colorScale(d["percentage"]) : "#F5F4F6"}
+                      stroke="#D6D6DA"
+                      // Pass a lambda function to the `onMouseEnter` event to pass the `geo` object to `handleMouseEnter`
+                      onMouseEnter={(event) => handleMouseEnter(event, geo)}
+                      onMouseLeave={handleMouseLeave}
+                      style={{
+                        default: {
+                          outline: "none",
+                        },
+                        hover: {
+                          fill: "#2e7c67",
+                          outline: "none",
+                        },
+                      }}
+                    />
+                  </HtmlTooltip>
+                );
+              })
+            }
+          </Geographies>
+        )}
       </ComposableMap>
-      <Box style={{ position: "absolute", bottom: "-370px", left: "20px" }}>
-          <WorldMapLegend />
-        </Box>
+      </Box>
+      <Box pr={2} sx={{ pl: 3, position: "absolute", bottom: "175px", left: "20px" }}>
+        <WorldMapLegend />
+      </Box>
     </Box>
   );
 };

@@ -107,6 +107,7 @@ const TabBar = ({ tabHeadings, searchResults }) => {
                   </ToggleButton>
                 </ToggleButtonGroup>
                 </Box>
+                <Box>
                 {displayMode ? (
                   <WorldMap
                     continentCount={continentCount[heading]}
@@ -119,6 +120,7 @@ const TabBar = ({ tabHeadings, searchResults }) => {
                     locations={geographicLocationsDict[heading]}
                   />
                 )}
+                </Box>
               </Box>
             )}
           </Box>

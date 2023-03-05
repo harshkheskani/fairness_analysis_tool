@@ -44,10 +44,10 @@ const ResultsTable = ({ results }) => {
         method: "GET",
         url: `https://en.wikipedia.org/w/api.php?action=parse&origin=*&page=${row.title}&format=json`,
       });
-
+      const title = row.title
       const html = response.data.parse.text["*"];
       if (html !== "") {
-        navigate(`/doctext/${row.docid}`, { state: { html } });
+        navigate(`/doctext/${row.docid}`, { state: { html, title } });
       }
     } catch (err) {
       console.log(err);

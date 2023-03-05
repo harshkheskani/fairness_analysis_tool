@@ -6,7 +6,7 @@ import katex from "katex";
 
 const RenderDocText = () => {
   const location = useLocation();
-  const { html } = location.state;
+  const { html, title } = location.state;
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -34,7 +34,20 @@ const RenderDocText = () => {
   const renderedHtml = replaceImagesWithLatex(html);
 
   return (
-    <Box>
+    <Box m={4}>
+      <Box>
+        <Typography
+          variant="h2"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "10px",
+          }}
+        >
+          {title}
+        </Typography>
+      </Box>
       <head>
         <link
           rel="stylesheet"
