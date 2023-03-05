@@ -6,8 +6,12 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
+import { tokens } from "../theme";
+import { useTheme } from "@mui/material";
 const BarChart = ({ continentCount, locations, searchResults }) => {
   // Full data set: country count
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const initialData = [
     { name: "unknown", value: 2557234, percentage: 42.15 },
@@ -22,6 +26,21 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
     { name: "Oceania", value: 157943, percentage: 2.6 },
     { name: "Africa", value: 131603, percentage: 2.17 },
     { name: "Antarctica", value: 9626, percentage: 0.16 },
+  ];
+
+  const initialDataPerCent = [
+    { name: "unknown", value: 42.15 },
+    { name: "Europe", value: 21.26 },
+    { name: "Northern America", value: 18.69 },
+    { name: "Asia", value: 9.9 },
+    {
+      name: "Latin America and the Caribbean",
+
+      value: 3.06,
+    },
+    { name: "Oceania", value: 2.6 },
+    { name: "Africa", value: 2.17 },
+    { name: "Antarctica", value: 0.16 },
   ];
 
   // Getting Ranks Per Continent
@@ -39,10 +58,13 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
         if (ranks.length > 0) {
           const sum = ranks.reduce((total, rank) => total + rank.value, 0);
           const average = sum / ranks.length;
-          continentAverages.push({ name: continent, value: average });
+          continentAverages.push({
+            name: continent,
+            value: Number(average.toFixed(2)),
+          });
           const low = Math.min(...ranks.map((rank) => rank.value));
           const high = Math.max(...ranks.map((rank) => rank.value));
-          rankRanges.push({ name: continent, low, high });
+          rankRanges.push({ name: continent, low: low, high: high });
         }
         continentRanks.push({ name: continent, value: ranks });
       });
@@ -54,18 +76,22 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
 
   // Calculate the Skew
   function skewness(data) {
-    const n = data.length;
-    const mean = data.reduce((acc, val) => acc + val, 0) / n;
+    const values = data.map((item) => item.value); // extract the "value" property from each dictionary
+    const n = values.length;
+    const mean = values.reduce((acc, val) => acc + val, 0) / n;
     const variance =
-      data.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / n;
+      values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / n;
     const stdDev = Math.sqrt(variance);
     const skewness =
-      data.reduce((acc, val) => acc + Math.pow(val - mean, 3), 0) /
+      values.reduce((acc, val) => acc + Math.pow(val - mean, 3), 0) /
       (n * Math.pow(stdDev, 3));
-    return skewness;
+
+    const skewData = skewness.toString(); // convert skewness to a string
+
+    return skewData
   }
 
-  const [barChartData, setBarChartData] = useState(initialData);
+  const [barChartData, setBarChartData] = useState(initialDataPerCent);
   const [searchDataDistribution, setSearchDataDistribution] = useState();
   const [expectedExposure, setExpectedExposure] = useState();
 
@@ -82,10 +108,16 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
     for (let key in continentCount) {
       if (continentCount.hasOwnProperty(key)) {
         const searchRatio = continentCount[key] / valueSum;
-        searchDistribution.push({ name: key, value: searchRatio * 100 });
+        searchDistribution.push({
+          name: key,
+          value: Number((searchRatio * 100).toFixed(2)),
+        });
         const fullDataSetRatio = getPercentageByName(key) / 100;
         const expectedExposure = Math.abs(searchRatio - fullDataSetRatio) * 100;
-        listExpectedExposure.push({ name: key, value: expectedExposure });
+        listExpectedExposure.push({
+          name: key,
+          value: Number(expectedExposure.toFixed(2)),
+        });
         // create a new object with the desired key names
         let newObj = {
           name: key,
@@ -100,7 +132,6 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
     setSearchDataDistribution(searchDistribution);
     setExpectedExposure(listExpectedExposure);
   }
-
   // updating map data
   useEffect(() => {
     if (Object.keys(continentCount || {}).length > 0) {
@@ -108,55 +139,87 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
     }
   }, [continentCount]);
 
-  const [yAxisLabel, setYAxisLabel] = useState()
+  const [yAxisLabel, setYAxisLabel] = useState("Distribution (%)");
+  const [barGraphTitle, setBarGraphTitle] = useState(
+    "Search Result Distribution"
+  );
+
+  const [skewGraphData, setSkewGraphData] = useState(skewness(initialDataPerCent));
 
   return (
     <Box>
       <Box
         sx={{
-          height: "50px",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           marginTop: "10px",
         }}
       >
-        <ToggleButtonGroup exclusive aria-label="text alignment">
-          <ToggleButton
-            value="center"
-            aria-label="centered"
-            onClick={() => {
-              setBarChartData(searchDataDistribution);
-              setYAxisLabel("Distribution (%)")
-            }}
-          >
-            <Typography>Distribution of Search Results</Typography>
-          </ToggleButton>
-          <ToggleButton
-            value="center"
-            aria-label="centered"
-            onClick={() => {
-              setBarChartData(expectedExposure);
-              setYAxisLabel("Expected Exposure (%)")
-            }}
-          >
-            <Typography>Expected Exposure</Typography>
-          </ToggleButton>
-          <ToggleButton
-            value="left"
-            aria-label="left aligned"
-            onClick={() => {
-              setBarChartData(avgContinentRank);
-              setYAxisLabel("Average Rank")
-            }}
-          >
-            <Typography>Average Rank</Typography>
-          </ToggleButton>
-          <ToggleButton value="center" aria-label="centered">
-            <Typography>Range of Ranks</Typography>
-          </ToggleButton>
-        </ToggleButtonGroup>
+        <Typography variant="h2">{barGraphTitle}</Typography>
       </Box>
+      {continentCount && locations && (
+        <React.Fragment>
+          <Box
+            sx={{
+              height: "50px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "10px",
+            }}
+          >
+            <ToggleButtonGroup exclusive aria-label="text alignment">
+              <ToggleButton
+                value="center"
+                aria-label="centered"
+                onClick={() => {
+                  setBarChartData(searchDataDistribution);
+                  setYAxisLabel("Distribution (%)");
+                  setBarGraphTitle("Distribution of Search Results");
+                  setSkewGraphData(skewness(searchDataDistribution))
+                }}
+              >
+                <Typography>Distribution of Search</Typography>
+              </ToggleButton>
+              <ToggleButton
+                value="center"
+                aria-label="centered"
+                onClick={() => {
+                  setBarChartData(expectedExposure);
+                  setYAxisLabel("Expected Exposure (%)");
+                  setBarGraphTitle("Expected Exposure of Search Results");
+                  setSkewGraphData(skewness(expectedExposure));
+                }}
+              >
+                <Typography>Expected Exposure</Typography>
+              </ToggleButton>
+              <ToggleButton
+                value="left"
+                aria-label="left aligned"
+                onClick={() => {
+                  setBarChartData(avgContinentRank);
+                  setYAxisLabel("Average Rank");
+                  setBarGraphTitle("Average Ranks for Contients");
+                  setSkewGraphData(skewness(avgContinentRank));
+                }}
+              >
+                <Typography>Average Rank</Typography>
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+          </React.Fragment>
+      )}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "10px",
+            }}
+          >
+            <Typography variant="h5">{`Skew: ${skewGraphData}`}</Typography>
+          </Box>
 
       <Box sx={{ height: "800px" }}>
         <ResponsiveBar
@@ -165,7 +228,7 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
           indexBy="name"
           margin={{ top: 50, right: 50, bottom: 50, left: 100 }}
           padding={0.3}
-          colors={{ scheme: "nivo" }}
+          colors={colors.greenAccent[600]}
           labelTextColor={{ from: "color", modifiers: [["darker", 1.6]] }}
           animate={true}
           motionStiffness={90}
@@ -176,7 +239,7 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
             legendOffset: -60,
           }}
           axisBottom={{
-            legend: "Contient",
+            legend: "Continent",
             legendPosition: "middle",
             legendOffset: 35,
           }}

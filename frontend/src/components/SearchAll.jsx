@@ -16,6 +16,7 @@ import {
   Chip,
   CircularProgress,
   TextField,
+  Button
 } from "@mui/material";
 import axios from "axios";
 import BarChart from "./BarChart";
@@ -101,6 +102,7 @@ const SearchAll = () => {
   const toggleDisplayMode = () => {
     setDisplayMode(!displayMode);
   };
+  console.log(displayMode);
 
   return (
     <Box sx={{ m: 2 }}>
@@ -194,24 +196,26 @@ const SearchAll = () => {
               }}
             >
               <ToggleButtonGroup
-                value={displayMode}
+                value={displayMode ? "map" : "chart"}
                 exclusive
                 onChange={toggleDisplayMode}
                 aria-label="text alignment"
               >
-                <ToggleButton value="left" aria-label="left aligned">
-                  <PublicIcon onClick={toggleDisplayMode} />
+                <ToggleButton value="map" aria-label="left aligned">
+                  <PublicIcon onClick={() => {toggleDisplayMode()}} />
                 </ToggleButton>
-                <ToggleButton value="center" aria-label="centered">
-                  <BarChartIcon onClick={toggleDisplayMode} />
+                <ToggleButton value="chart" aria-label="centered">
+                  <BarChartIcon onClick={ () => {toggleDisplayMode()}} />
                 </ToggleButton>
               </ToggleButtonGroup>
+
             </Box>
             <Box
               sx={{
-                marginTop: "-125px",
+                marginTop: "-10px",
+                height: "1500px",
               }}
-            >
+            > 
               {displayMode ? <WorldMap /> : <BarChart />}
             </Box>
           </Box>
