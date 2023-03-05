@@ -22,7 +22,7 @@ const Topbar = () => {
     <Box display="flex" justifyContent="space-between" p={2}>
       
         <Box display="flex">
-        {location.pathname === "/dashboard" && (
+        {(location.pathname === "/dashboard" || location.pathname.startsWith("/doctext")) && (
           <Typography variant="h2" color={colors.grey[100]} fontWeight="400" onClick={handleClick}>
             FairLens
           </Typography>

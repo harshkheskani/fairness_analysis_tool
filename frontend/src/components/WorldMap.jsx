@@ -140,136 +140,138 @@ const WorldMap = ({ continentCount, locations }) => {
           justifyContent: "center",
           alignItems: "center",
           marginTop: "10px",
-          marginBottom: "-150px"
+          marginBottom: "-150px",
         }}
       >
         <Typography variant="h2">{graphTitle}</Typography>
       </Box>
-      <Box sx ={{flex:1}}>
-      <ComposableMap
-        projectionConfig={{
-          rotate: [-10, 0, 0],
-          scale: 147,
-        }}
-      >
-        <Sphere stroke="#E4E5E6" strokeWidth={0.5} />
-        <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
-        {locations && continentCount ? (
-          <Geographies geography={continentsFile}>
-            {({ geographies }) =>
-              geographies.map((geo) => {
-                const d = mapPercentageData.find(
-                  (s) => s.name === geo.properties.CONTINENT
-                );
-                const avg = avgContinentRank.find(
-                  (s) => s.name === geo.properties.CONTINENT
-                );
-                const ranks = rankRangesPerContinent.find(
-                  (s) => s.name === geo.properties.CONTINENT
-                );
-                return (
-                  <HtmlTooltip
-                    title={
-                      <React.Fragment>
-                        <Typography>
-                          <em>
-                            <b>{geo.properties.CONTINENT}</b>
-                          </em>
-                        </Typography>
-                        <Typography>
-                          <b>Expected Exposure: </b>
-                          {d ? d.percentage : "N/A"}%
-                        </Typography>
-                        <Typography>
-                          <b>Average Rank: </b>
-                          {avg ? avg.value: "N/A"}
-                        </Typography>
-                        <Typography>
-                          <b>Highest Rank: </b>
-                          {ranks ? ranks.high : "N/A"}
-                        </Typography>
-                        <Typography>
-                          <b>Lowest Rank: </b>
-                          {ranks ? ranks.low :"N/A"}
-                        </Typography>
-                      </React.Fragment>
-                    }
-                    key={geo.properties.CONTINENT}
-                  >
-                    <Geography
-                      geography={geo}
+      <Box sx={{ flex: 1 }}>
+        <ComposableMap
+          projectionConfig={{
+            rotate: [-10, 0, 0],
+            scale: 147,
+          }}
+        >
+          <Sphere stroke="#E4E5E6" strokeWidth={0.5} />
+          <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
+          {locations && continentCount ? (
+            <Geographies geography={continentsFile}>
+              {({ geographies }) =>
+                geographies.map((geo) => {
+                  const d = mapPercentageData.find(
+                    (s) => s.name === geo.properties.CONTINENT
+                  );
+                  const avg = avgContinentRank.find(
+                    (s) => s.name === geo.properties.CONTINENT
+                  );
+                  const ranks = rankRangesPerContinent.find(
+                    (s) => s.name === geo.properties.CONTINENT
+                  );
+                  return (
+                    <HtmlTooltip
+                      title={
+                        <React.Fragment>
+                          <Typography>
+                            <em>
+                              <b>{geo.properties.CONTINENT}</b>
+                            </em>
+                          </Typography>
+                          <Typography>
+                            <b>Expected Exposure: </b>
+                            {d ? d.percentage : "N/A"}%
+                          </Typography>
+                          <Typography>
+                            <b>Average Rank: </b>
+                            {avg ? avg.value : "N/A"}
+                          </Typography>
+                          <Typography>
+                            <b>Highest Rank: </b>
+                            {ranks ? ranks.high : "N/A"}
+                          </Typography>
+                          <Typography>
+                            <b>Lowest Rank: </b>
+                            {ranks ? ranks.low : "N/A"}
+                          </Typography>
+                        </React.Fragment>
+                      }
                       key={geo.properties.CONTINENT}
-                      fill={d ? colorScale(d["percentage"]) : "#F5F4F6"}
-                      stroke="#D6D6DA"
-                      // Pass a lambda function to the `onMouseEnter` event to pass the `geo` object to `handleMouseEnter`
-                      onMouseEnter={(event) => handleMouseEnter(event, geo)}
-                      onMouseLeave={handleMouseLeave}
-                      style={{
-                        default: {
-                          outline: "none",
-                        },
-                        hover: {
-                          fill: "#2e7c67",
-                          outline: "none",
-                        },
-                      }}
-                    />
-                  </HtmlTooltip>
-                );
-              })
-            }
-          </Geographies>
-        ) : (
-          <Geographies geography={continentsFile}>
-            {({ geographies }) =>
-              geographies.map((geo) => {
-                const d = mapPercentageData.find(
-                  (s) => s.name === geo.properties.CONTINENT
-                );
-                return (
-                  <HtmlTooltip
-                    title={
-                      <React.Fragment>
-                        <Typography>
-                          <em>
-                            <b>{geo.properties.CONTINENT}</b>
-                          </em>{" "}
-                        </Typography>
-                        <Typography>
-                          <b>Actual exposure: </b>
-                          {d ? d.percentage : "N/A"}%
-                        </Typography>
-                      </React.Fragment>
-                    }
-                    key={geo.properties.CONTINENT}
-                  >
-                    <Geography
-                      geography={geo}
+                    >
+                      <Geography
+                        geography={geo}
+                        key={geo.properties.CONTINENT}
+                        fill={d ? colorScale(d["percentage"]) : "#F5F4F6"}
+                        stroke="#D6D6DA"
+                        // Pass a lambda function to the `onMouseEnter` event to pass the `geo` object to `handleMouseEnter`
+                        onMouseEnter={(event) => handleMouseEnter(event, geo)}
+                        onMouseLeave={handleMouseLeave}
+                        style={{
+                          default: {
+                            outline: "none",
+                          },
+                          hover: {
+                            fill: "#2e7c67",
+                            outline: "none",
+                          },
+                        }}
+                      />
+                    </HtmlTooltip>
+                  );
+                })
+              }
+            </Geographies>
+          ) : (
+            <Geographies geography={continentsFile}>
+              {({ geographies }) =>
+                geographies.map((geo) => {
+                  const d = mapPercentageData.find(
+                    (s) => s.name === geo.properties.CONTINENT
+                  );
+                  return (
+                    <HtmlTooltip
+                      title={
+                        <React.Fragment>
+                          <Typography>
+                            <em>
+                              <b>{geo.properties.CONTINENT}</b>
+                            </em>{" "}
+                          </Typography>
+                          <Typography>
+                            <b>Actual exposure: </b>
+                            {d ? d.percentage : "N/A"}%
+                          </Typography>
+                        </React.Fragment>
+                      }
                       key={geo.properties.CONTINENT}
-                      fill={d ? colorScale(d["percentage"]) : "#F5F4F6"}
-                      stroke="#D6D6DA"
-                      // Pass a lambda function to the `onMouseEnter` event to pass the `geo` object to `handleMouseEnter`
-                      onMouseEnter={(event) => handleMouseEnter(event, geo)}
-                      onMouseLeave={handleMouseLeave}
-                      style={{
-                        default: {
-                          outline: "none",
-                        },
-                        hover: {
-                          fill: "#2e7c67",
-                          outline: "none",
-                        },
-                      }}
-                    />
-                  </HtmlTooltip>
-                );
-              })
-            }
-          </Geographies>
-        )}
-      </ComposableMap>
+                    >
+                      <Geography
+                        geography={geo}
+                        key={geo.properties.CONTINENT}
+                        fill={d ? colorScale(d["percentage"]) : "#F5F4F6"}
+                        stroke="#D6D6DA"
+                        // Pass a lambda function to the `onMouseEnter` event to pass the `geo` object to `handleMouseEnter`
+                        onMouseEnter={(event) => handleMouseEnter(event, geo)}
+                        onMouseLeave={handleMouseLeave}
+                        style={{
+                          default: {
+                            outline: "none",
+                          },
+                          hover: {
+                            fill: "#2e7c67",
+                            outline: "none",
+                          },
+                        }}
+                      />
+                    </HtmlTooltip>
+                  );
+                })
+              }
+            </Geographies>
+          )}
+        </ComposableMap>
       </Box>
-      <Box pr={2} sx={{ pl: 3, position: "absolute", bottom: "175px", left: "20px" }}>
+      <Box
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "-100px" }}
+      >
         <WorldMapLegend />
       </Box>
     </Box>
