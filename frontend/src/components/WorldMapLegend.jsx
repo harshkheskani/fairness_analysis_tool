@@ -1,37 +1,32 @@
 import React from "react";
+import { Box } from "@mui/material";
 import { scaleLinear } from "d3-scale";
-const WorldMapLegend = () => {
-const colorScale = scaleLinear()
-  .domain([0, 100])
-  .range(["#ffedea", "#ff5233"]);
 
-const legends = colorScale.ticks(5).map((value, index) => {
-  const color = colorScale(value);
-  return (
-    <div key={index}>
-      <div>
-        <span style={{ backgroundColor: colorScale(0) }}></span>
-        <span>0%</span>
+const WorldMapLegend = () => {
+  const colorScale = scaleLinear()
+    .domain([0, 100])
+    .range(["#ffedea", "#ff5233"]);
+
+
+
+  const legendItems = [];
+
+  for (let i = 0; i <= 100; i += 10) {
+    const style = {
+      display: "inline-block",
+      width: "15px",
+      height: "15px",
+      marginRight: "5px",
+      backgroundColor: colorScale(i),
+    };
+    legendItems.push(
+      <div key={i}>
+        <span className="color-block" style={style}></span>
+        <span>{i.toString() + "%"}</span>
       </div>
-      <div>
-        <span style={{ backgroundColor: colorScale(25) }}></span>
-        <span>25%</span>
-      </div>
-      <div>
-        <span style={{ backgroundColor: colorScale(50) }}></span>
-        <span>50%</span>
-      </div>
-      <div>
-        <span style={{ backgroundColor: colorScale(75) }}></span>
-        <span>75%</span>
-      </div>
-      <div>
-        <span style={{ backgroundColor: colorScale(100) }}></span>
-        <span>100%</span>
-      </div>
-    </div>
-  );
-});
-}
- 
+    );
+  }
+
+  return <Box>{legendItems}</Box>;
+};
 export default WorldMapLegend;

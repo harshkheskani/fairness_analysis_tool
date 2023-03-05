@@ -158,7 +158,11 @@ const WorldMap = ({ continentCount, locations }) => {
             })
           }
         </Geographies>
+
       </ComposableMap>
+      <Box style={{ position: "absolute", bottom: "-370px", left: "20px" }}>
+          <WorldMapLegend />
+        </Box>
     </Box>
   );
 };
