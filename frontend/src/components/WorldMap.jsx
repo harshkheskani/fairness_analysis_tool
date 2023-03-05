@@ -93,7 +93,7 @@ const WorldMap = ({ continentCount, locations }) => {
   // Color Scale for maps
   const colorScale = scaleLinear()
     .domain([0, 100])
-    .range(["#ffedea", "#ff5233"]);
+    .range(["#dbf5ee", "#2e7c67"]);
 
   const [tooltipContent, setTooltipContent] = useState("");
   // Function to obtain information on Hover:- Add a second argument to the `handleMouseEnter` function to receive the `geo` object
@@ -148,7 +148,7 @@ const WorldMap = ({ continentCount, locations }) => {
                         outline: "none",
                       },
                       hover: {
-                        fill: "#F53",
+                        fill: "#2e7c67",
                         outline: "none",
                       },
                     }}

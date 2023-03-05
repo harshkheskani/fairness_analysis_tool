@@ -5,7 +5,7 @@ import { scaleLinear } from "d3-scale";
 const WorldMapLegend = () => {
   const colorScale = scaleLinear()
     .domain([0, 100])
-    .range(["#ffedea", "#ff5233"]);
+    .range(["#dbf5ee", "#2e7c67"]);
 
 
 
