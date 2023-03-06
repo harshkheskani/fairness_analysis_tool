@@ -237,7 +237,7 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
       >
         <Typography variant="h5">{`Skew: ${skewGraphData}`}</Typography>
       </Box>
-
+   
       <Box sx={{ height: "800px" }}>
         <ResponsiveBar
           data={barChartData}
@@ -246,7 +246,7 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
           margin={{ top: 50, right: 50, bottom: 50, left: 100 }}
           padding={0.3}
           colors={colors.greenAccent[600]}
-          labelTextColor={{ from: "color", modifiers: [["darker", 1.6]] }}
+          labelTextColor={colors.primary[100]}
           animate={true}
           motionStiffness={90}
           motionDamping={15}

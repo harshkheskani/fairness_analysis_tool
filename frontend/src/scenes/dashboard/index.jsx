@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+
 import ArticleIcon from "@mui/icons-material/Article";
 import PublicIcon from "@mui/icons-material/Public";
 
@@ -25,20 +25,7 @@ const Dashboard = () => {
           <Typography variant="h4">Welcome to your Dashboard</Typography>
         </Box>
         <Box gridColumn="span 8" backgroundColor={colors.primary[400]}></Box>
-        <Box>
-          <Button
-            sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-          >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Report
-          </Button>
-        </Box>
+        
       </Box>
 
       {/* GRID & CHARTS */}

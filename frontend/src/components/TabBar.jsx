@@ -69,12 +69,12 @@ const TabBar = ({ tabHeadings, searchResults }) => {
 
 
   return (
-    <Box sx={{ width: "100%", height: "100%", bgcolor: "background.paper" }}>
+    <Box sx={{ width: "100%", height: "100%", backgroundColor: "transparent" }}>
       <Tabs
         value={value}
         onChange={handleChange}
         centered
-        sx={{ backgroundColor: colors.primary[500] }}
+        sx={{ backgroundColor: colors.primary[400] }}
       >
         {tabHeadings.map((heading, index) => (
           <Tab key={index} label={heading} sx={{ color: "white" }} />
@@ -86,13 +86,13 @@ const TabBar = ({ tabHeadings, searchResults }) => {
             key={index}
             style={{
               display: value === index ? "block" : "none",
-              bgcolor: "background.paper",
+              backgroundColor: "transparent"
             }}
           >
             {searchResults[heading] && (
-              <Box sx={{ height: "1500px", bgcolor: "background.paper" }}>
+              <Box sx={{ height: "1500px", backgroundColor: "transparent" }}>
                 <ResultsTable results={searchResults[heading]} sx = {{m:2}} />
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: "10px"}}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: "10px", backgroundColor: "transparent"}}>
                 <ToggleButtonGroup
                   value={displayMode}
                   exclusive
@@ -107,7 +107,7 @@ const TabBar = ({ tabHeadings, searchResults }) => {
                   </ToggleButton>
                 </ToggleButtonGroup>
                 </Box>
-                <Box>
+                <Box sx = {{ backgroundColor: "transparent" }}>
                 {displayMode ? (
                   <WorldMap
                     continentCount={continentCount[heading]}

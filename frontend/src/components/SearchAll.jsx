@@ -16,7 +16,7 @@ import {
   Chip,
   CircularProgress,
   TextField,
-  Button
+  Button,
 } from "@mui/material";
 import axios from "axios";
 import BarChart from "./BarChart";
@@ -193,6 +193,7 @@ const SearchAll = () => {
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: "10px",
+                backgroundColor: "transparent",
               }}
             >
               <ToggleButtonGroup
@@ -202,20 +203,28 @@ const SearchAll = () => {
                 aria-label="text alignment"
               >
                 <ToggleButton value="map" aria-label="left aligned">
-                  <PublicIcon onClick={() => {toggleDisplayMode()}} />
+                  <PublicIcon
+                    onClick={() => {
+                      toggleDisplayMode();
+                    }}
+                  />
                 </ToggleButton>
                 <ToggleButton value="chart" aria-label="centered">
-                  <BarChartIcon onClick={ () => {toggleDisplayMode()}} />
+                  <BarChartIcon
+                    onClick={() => {
+                      toggleDisplayMode();
+                    }}
+                  />
                 </ToggleButton>
               </ToggleButtonGroup>
-
             </Box>
             <Box
               sx={{
                 marginTop: "-10px",
                 height: "1500px",
+                backgroundColor: "transparent"
               }}
-            > 
+            >
               {displayMode ? <WorldMap /> : <BarChart />}
             </Box>
           </Box>
