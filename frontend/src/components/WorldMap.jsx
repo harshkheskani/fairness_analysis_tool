@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { scaleLinear } from "d3-scale";
-import { tokens } from "../theme";
-import { useTheme, Box, Typography } from "@mui/material";
+import {  Box, Typography } from "@mui/material";
 import {
   ComposableMap,
   Geographies,
@@ -15,8 +14,7 @@ import WorldMapLegend from "./WorldMapLegend";
 import { styled } from "@mui/material/styles";
 
 const WorldMap = ({ continentCount, locations }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+
   // Full data set: country count
   const initialData = [
     { name: "unknown", value: 2557234, percentage: 42.15 },
