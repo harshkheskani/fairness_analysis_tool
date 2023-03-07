@@ -151,6 +151,8 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
     skewness(initialDataPerCent)
   );
 
+  const [graphDescription, setGraphDescription] = useState("The bar graph depicts the distribution of geographic locations in the dataset, showing the percentage of data attributed to each location");
+
   return (
     <Box>
       <Box
@@ -162,6 +164,16 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
         }}
       >
         <Typography variant="h2">{barGraphTitle}</Typography>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "10px",
+        }}
+      >
+        <Typography variant="h5">{graphDescription}</Typography>
       </Box>
       {continentCount && locations && (
         <React.Fragment>
@@ -182,6 +194,7 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
                   setBarChartData(searchDataDistribution);
                   setYAxisLabel("Distribution (%)");
                   setBarGraphTitle("Distribution of Search Results");
+                  setGraphDescription("The bar graph depicts the distribution of geographic locations in the dataset, showing the percentage of data attributed to each location")
                   setSkewGraphData(skewness(searchDataDistribution));
                 }}
               >
@@ -195,6 +208,7 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
                   setYAxisLabel("Expected Exposure (%)");
                   setBarGraphTitle("Expected Exposure of Search Results");
                   setSkewGraphData(skewness(expectedExposure));
+                  setGraphDescription("The graph displays the predicted expected exposure, based of the search results distrbution")
                 }}
               >
                 <Typography>Expected Exposure</Typography>
@@ -207,6 +221,7 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
                   setYAxisLabel("Average Rank");
                   setBarGraphTitle("Average Ranks for Contients");
                   setSkewGraphData(skewness(avgContinentRank));
+                  setGraphDescription("The bar graph shows the average ranking of a dataset, categorized by geographic location")
                 }}
               >
                 <Typography>Average Rank</Typography>
@@ -219,6 +234,7 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
                   setYAxisLabel("Number of Documents");
                   setBarGraphTitle("Number of Documents per Continent");
                   setSkewGraphData(skewness(avgContinentRank));
+                  setGraphDescription("The bar chart displays the number of documents attributed to each geographic location")
                 }}
               >
                 <Typography>Number of Documents</Typography>
@@ -237,7 +253,7 @@ const BarChart = ({ continentCount, locations, searchResults }) => {
       >
         <Typography variant="h5">{`Skew: ${skewGraphData}`}</Typography>
       </Box>
-   
+
       <Box sx={{ height: "800px" }}>
         <ResponsiveBar
           data={barChartData}

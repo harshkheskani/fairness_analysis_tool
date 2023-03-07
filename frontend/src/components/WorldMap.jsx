@@ -130,10 +130,13 @@ const WorldMap = ({ continentCount, locations }) => {
     },
   }));
 
+  const [worldMapDescription, setWorldMapDescription] = useState("The world choropleth map displays the data distribution across various geographic locations")
+
   return (
     <Box>
       <Box
         sx={{
+          flexDirection: "column", 
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -142,6 +145,7 @@ const WorldMap = ({ continentCount, locations }) => {
         }}
       >
         <Typography variant="h2">{graphTitle}</Typography>
+        <Typography variant="h5">{worldMapDescription}</Typography>
       </Box>
       <Box sx={{ flex: 1 }}>
         <ComposableMap
@@ -165,6 +169,7 @@ const WorldMap = ({ continentCount, locations }) => {
                   const ranks = rankRangesPerContinent.find(
                     (s) => s.name === geo.properties.CONTINENT
                   );
+                  setWorldMapDescription("The world choropleth map depicts the data distribution, along with highest, lowest and average rank, as well as expected exposure, for each geographic location")
                   return (
                     <HtmlTooltip
                       title={
