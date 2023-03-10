@@ -130,7 +130,7 @@ const WorldMap = ({ continentCount, locations }) => {
     },
   }));
 
-  const [worldMapDescription, setWorldMapDescription] = useState("The world choropleth map displays the data distribution across various geographic locations")
+  const [worldMapDescription, setWorldMapDescription] = useState("The world choropleth map displays the data distribution across various geographic locations, over the whole dataset")
 
   return (
     <Box>
@@ -169,7 +169,7 @@ const WorldMap = ({ continentCount, locations }) => {
                   const ranks = rankRangesPerContinent.find(
                     (s) => s.name === geo.properties.CONTINENT
                   );
-                  setWorldMapDescription("The world choropleth map depicts the data distribution, along with highest, lowest and average rank, as well as expected exposure, for each geographic location")
+                  setWorldMapDescription("The world choropleth map depicts the data distribution, along with highest, lowest and average rank, as well as expected exposure, for each geographic location over the search results")
                   return (
                     <HtmlTooltip
                       title={
