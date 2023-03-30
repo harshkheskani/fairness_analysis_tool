@@ -5,6 +5,7 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { tokens } from "../../theme";
 import { useNavigate, useLocation } from "react-router-dom";
+import React from "react";
 
 const Topbar = () => {
   const theme = useTheme();
@@ -24,7 +25,7 @@ const Topbar = () => {
         <Box display="flex">
         {(location.pathname === "/dashboard" || location.pathname.startsWith("/doctext")) && (
           <Typography variant="h2" color={colors.grey[100]} fontWeight="400" onClick={handleClick}>
-            FairLens
+            PlanetParity
           </Typography>
             )}
         </Box>

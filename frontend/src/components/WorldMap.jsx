@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { scaleLinear } from "`d3-scale`";
-import {  Box, Typography } from "@mui/material";
+import { scaleLinear } from "d3-scale";
+import { Box, Typography } from "@mui/material";
 import {
   ComposableMap,
   Geographies,
@@ -14,7 +14,6 @@ import WorldMapLegend from "./WorldMapLegend";
 import { styled } from "@mui/material/styles";
 
 const WorldMap = ({ continentCount, locations }) => {
-
   // Full data set: country count
   const initialData = [
     { name: "unknown", value: 2557234, percentage: 42.15 },
@@ -130,13 +129,15 @@ const WorldMap = ({ continentCount, locations }) => {
     },
   }));
 
-  const [worldMapDescription, setWorldMapDescription] = useState("The world choropleth map displays the data distribution across various geographic locations, over the whole dataset")
+  const [worldMapDescription, setWorldMapDescription] = useState(
+    "The world choropleth map displays the data distribution across various geographic locations, over the whole dataset"
+  );
 
   return (
     <Box>
       <Box
         sx={{
-          flexDirection: "column", 
+          flexDirection: "column",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -169,7 +170,9 @@ const WorldMap = ({ continentCount, locations }) => {
                   const ranks = rankRangesPerContinent.find(
                     (s) => s.name === geo.properties.CONTINENT
                   );
-                  setWorldMapDescription("The world choropleth map depicts the data distribution, along with highest, lowest and average rank, as well as expected exposure, for each geographic location over the search results")
+                  setWorldMapDescription(
+                    "The world choropleth map depicts the data distribution, along with highest, lowest and average rank, as well as expected exposure, for each geographic location over the search results"
+                  );
                   return (
                     <HtmlTooltip
                       title={
@@ -273,7 +276,12 @@ const WorldMap = ({ continentCount, locations }) => {
         </ComposableMap>
       </Box>
       <Box
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "-100px" }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "-100px",
+        }}
       >
         <WorldMapLegend />
       </Box>
