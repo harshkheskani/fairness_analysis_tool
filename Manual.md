@@ -2,14 +2,17 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
-* **`pip`**: The backend uses Django, and therefore dependencies can be installed using pip
+* **`pip`**: The backend uses Django, and therefore dependencies can be installed using pip, 
 ```sh
 python3 -m venv env              
-source ./env/scripts/activate     
-pip  pip install -r requirements.txt                     
+source ./env/scripts/activate                         
+```
+* **`Backend`**: Go inside the backend directory and run
+```sh
+pip  pip install -r requirements.txt 
 ```
 
-* **`npm`**: The frontend uses React, and therefore dependencies can be handled using npm 
+* **`npm`**: The frontend uses React, go inside the frontend folder and install the dependencies 
 
 ```sh
 npm install  
