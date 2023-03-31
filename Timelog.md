@@ -5,6 +5,9 @@
 * 2482581k
 * Dr Graham McDonald
 
+# Notice
+Didn't break it down by day, as a lot of the task over lapped multiple days hence did it week by week view
+
 ## Week 1
 
 ### 19 Oct 2019
